@@ -19,26 +19,8 @@ const ProductModal = ({ product, onClose }) => {
     setCurrentImgIndex(0);
   }, [product, isPersonalizable]);
 
-  if (!product) return null;
-
-  const hasOffer = product.precio_oferta && product.precio_oferta.trim() !== '' && product.precio_oferta !== product.precio;
-  const isOutOfStock = product.stock && product.stock.toString().toLowerCase() === 'agotado';
-
-  const formatPrice = (p) => {
-    if (!p) return '';
-    const num = parseInt(p.toString().replace(/\D/g, ''), 10);
-    return isNaN(num) ? p : `$${num.toLocaleString('es-CL')}`;
-  };
-
-  const handleAddToCart = () => {
-    if (isOutOfStock) return;
-    const customData = isCustomized ? customText : null;
-    addToCart(product, quantity, customData);
-    onClose();
-  };
-
   // Determine which images to show
-  let imagesToRender = product.imagenes && product.imagenes.length > 0 ? product.imagenes : [product.imagen_url];
+  let imagesToRender = product?.imagenes && product.imagenes.length > 0 ? product.imagenes : [product?.imagen_url];
   if (isPersonalizable) {
     if (isCustomized === false) {
       imagesToRender = [imagesToRender[0]];
@@ -66,6 +48,24 @@ const ProductModal = ({ product, onClose }) => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
+
+  if (!product) return null;
+
+  const hasOffer = product.precio_oferta && product.precio_oferta.trim() !== '' && product.precio_oferta !== product.precio;
+  const isOutOfStock = product.stock && product.stock.toString().toLowerCase() === 'agotado';
+
+  const formatPrice = (p) => {
+    if (!p) return '';
+    const num = parseInt(p.toString().replace(/\D/g, ''), 10);
+    return isNaN(num) ? p : `$${num.toLocaleString('es-CL')}`;
+  };
+
+  const handleAddToCart = () => {
+    if (isOutOfStock) return;
+    const customData = isCustomized ? customText : null;
+    addToCart(product, quantity, customData);
+    onClose();
+  };
 
   const nextImage = (e) => {
     e.stopPropagation();
