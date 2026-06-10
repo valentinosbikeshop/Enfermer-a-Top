@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ProductCard = ({ product, onClick }) => {
@@ -26,6 +26,16 @@ const ProductCard = ({ product, onClick }) => {
 
   const imagesToRender = imagenes && imagenes.length > 0 ? imagenes : [imagen_url];
   const hasMultipleImages = imagesToRender.length > 1;
+
+  useEffect(() => {
+    let interval;
+    if (hasMultipleImages) {
+      interval = setInterval(() => {
+        setCurrentImgIndex((prev) => (prev + 1) % imagesToRender.length);
+      }, 3500);
+    }
+    return () => clearInterval(interval);
+  }, [hasMultipleImages, imagesToRender.length]);
 
   const nextImage = (e) => {
     e.stopPropagation();
@@ -84,9 +94,10 @@ const ProductCard = ({ product, onClick }) => {
           </>
         )}
         <img 
+          key={currentImgIndex}
           src={imagesToRender[currentImgIndex]} 
           alt={nombre} 
-          className={`object-contain max-h-full transition-transform duration-500 group-hover:scale-105 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+          className={`object-contain max-h-full transition-transform duration-500 animate-fade-in group-hover:scale-105 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
           loading="lazy"
         />
       </div>

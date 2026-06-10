@@ -47,6 +47,26 @@ const ProductModal = ({ product, onClose }) => {
     }
   }
 
+  // Automatic carousel loop
+  useEffect(() => {
+    let interval;
+    if (imagesToRender.length > 1) {
+      interval = setInterval(() => {
+        setCurrentImgIndex((prev) => (prev + 1) % imagesToRender.length);
+      }, 3500);
+    }
+    return () => clearInterval(interval);
+  }, [imagesToRender.length, isCustomized]);
+
+  // ESC key to close
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const nextImage = (e) => {
     e.stopPropagation();
     setCurrentImgIndex((prev) => (prev + 1) % imagesToRender.length);
@@ -105,9 +125,10 @@ const ProductModal = ({ product, onClose }) => {
             )}
 
             <img 
+              key={currentImgIndex}
               src={imagesToRender[currentImgIndex % imagesToRender.length]} 
               alt={product.nombre}
-              className={`max-w-full max-h-[400px] object-contain drop-shadow-lg transition-transform duration-500 ${imagesToRender.length > 1 ? '' : 'group-hover:scale-105'} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+              className={`max-w-full max-h-[400px] object-contain drop-shadow-lg transition-transform duration-500 animate-fade-in ${imagesToRender.length > 1 ? '' : 'group-hover:scale-105'} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
             />
           </div>
 
