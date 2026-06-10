@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ProductCard = ({ product, onClick }) => {
   const { 
@@ -7,9 +8,12 @@ const ProductCard = ({ product, onClick }) => {
     precio, 
     precio_oferta, 
     imagen_url, 
+    imagenes,
     etiqueta,
     stock 
   } = product;
+
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   const hasOffer = precio_oferta && precio_oferta.trim() !== '' && precio_oferta !== precio;
   const isOutOfStock = stock && stock.toString().toLowerCase() === 'agotado';
@@ -18,6 +22,19 @@ const ProductCard = ({ product, onClick }) => {
     if (!p) return '';
     const num = parseInt(p.toString().replace(/\D/g, ''), 10);
     return isNaN(num) ? p : `$${num.toLocaleString('es-CL')}`;
+  };
+
+  const imagesToRender = imagenes && imagenes.length > 0 ? imagenes : [imagen_url];
+  const hasMultipleImages = imagesToRender.length > 1;
+
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setCurrentImgIndex((prev) => (prev + 1) % imagesToRender.length);
+  };
+
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setCurrentImgIndex((prev) => (prev - 1 + imagesToRender.length) % imagesToRender.length);
   };
 
   return (
@@ -42,8 +59,32 @@ const ProductCard = ({ product, onClick }) => {
 
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden bg-slate-50 flex items-center justify-center p-4">
+        {hasMultipleImages && (
+          <>
+            <button 
+              onClick={prevImage}
+              className="absolute left-2 z-20 bg-white/80 backdrop-blur text-slate-800 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button 
+              onClick={nextImage}
+              className="absolute right-2 z-20 bg-white/80 backdrop-blur text-slate-800 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+            >
+              <ChevronRight size={20} />
+            </button>
+            <div className="absolute bottom-3 flex gap-1.5 z-20">
+              {imagesToRender.map((_, idx) => (
+                <div 
+                  key={idx} 
+                  className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImgIndex ? 'bg-turquesa w-3' : 'bg-slate-300'}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
         <img 
-          src={imagen_url} 
+          src={imagesToRender[currentImgIndex]} 
           alt={nombre} 
           className={`object-contain max-h-full transition-transform duration-500 group-hover:scale-105 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
           loading="lazy"

@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { X, ShoppingBag } from 'lucide-react';
+import { X, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useProducts } from '../data/ProductsContext';
 
 const ProductModal = ({ product, onClose }) => {
   const { addToCart } = useProducts();
-  const [isCustomized, setIsCustomized] = useState(false);
+  const isPersonalizable = product?.es_personalizable && product.es_personalizable.toLowerCase() === 'sí';
+  
+  const [isCustomized, setIsCustomized] = useState(isPersonalizable ? null : false);
   const [customText, setCustomText] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   // Reset state when product changes
   useEffect(() => {
-    setIsCustomized(false);
+    setIsCustomized(isPersonalizable ? null : false);
     setCustomText('');
     setQuantity(1);
-  }, [product]);
+    setCurrentImgIndex(0);
+  }, [product, isPersonalizable]);
 
   if (!product) return null;
 
-  const isPersonalizable = product.es_personalizable && product.es_personalizable.toLowerCase() === 'sí';
   const hasOffer = product.precio_oferta && product.precio_oferta.trim() !== '' && product.precio_oferta !== product.precio;
   const isOutOfStock = product.stock && product.stock.toString().toLowerCase() === 'agotado';
 
@@ -32,6 +35,26 @@ const ProductModal = ({ product, onClose }) => {
     const customData = isCustomized ? customText : null;
     addToCart(product, quantity, customData);
     onClose();
+  };
+
+  // Determine which images to show
+  let imagesToRender = product.imagenes && product.imagenes.length > 0 ? product.imagenes : [product.imagen_url];
+  if (isPersonalizable) {
+    if (isCustomized === false) {
+      imagesToRender = [imagesToRender[0]];
+    } else if (isCustomized === true || isCustomized === null) {
+      imagesToRender = imagesToRender.length > 1 ? imagesToRender.slice(1) : imagesToRender;
+    }
+  }
+
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setCurrentImgIndex((prev) => (prev + 1) % imagesToRender.length);
+  };
+
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setCurrentImgIndex((prev) => (prev - 1 + imagesToRender.length) % imagesToRender.length);
   };
 
   return (
@@ -49,16 +72,42 @@ const ProductModal = ({ product, onClose }) => {
 
         <div className="flex flex-col md:flex-row h-full">
           {/* Image */}
-          <div className="md:w-1/2 bg-slate-50 p-8 flex items-center justify-center relative">
+          <div className="md:w-1/2 bg-slate-50 p-8 flex items-center justify-center relative overflow-hidden group">
              {product.etiqueta && (
-              <div className="absolute top-6 left-6 px-4 py-1 text-sm font-bold rounded-full bg-rosa text-slate-800">
+              <div className="absolute top-6 left-6 z-10 px-4 py-1 text-sm font-bold rounded-full bg-rosa text-slate-800">
                 {product.etiqueta}
               </div>
             )}
+            
+            {imagesToRender.length > 1 && (
+              <>
+                <button 
+                  onClick={prevImage}
+                  className="absolute left-4 z-20 bg-white/80 backdrop-blur text-slate-800 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white shadow-md"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button 
+                  onClick={nextImage}
+                  className="absolute right-4 z-20 bg-white/80 backdrop-blur text-slate-800 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white shadow-md"
+                >
+                  <ChevronRight size={24} />
+                </button>
+                <div className="absolute bottom-6 flex gap-2 z-20">
+                  {imagesToRender.map((_, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`h-2 rounded-full transition-all ${idx === (currentImgIndex % imagesToRender.length) ? 'bg-turquesa w-6' : 'bg-slate-300 w-2'}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+
             <img 
-              src={product.imagen_url} 
+              src={imagesToRender[currentImgIndex % imagesToRender.length]} 
               alt={product.nombre}
-              className={`max-w-full max-h-[400px] object-contain drop-shadow-lg ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+              className={`max-w-full max-h-[400px] object-contain drop-shadow-lg transition-transform duration-500 ${imagesToRender.length > 1 ? '' : 'group-hover:scale-105'} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
             />
           </div>
 
@@ -89,7 +138,7 @@ const ProductModal = ({ product, onClose }) => {
                     <input 
                       type="radio" 
                       name="customization" 
-                      checked={!isCustomized}
+                      checked={isCustomized === false}
                       onChange={() => setIsCustomized(false)}
                       className="text-turquesa focus:ring-turquesa"
                     />
@@ -99,7 +148,7 @@ const ProductModal = ({ product, onClose }) => {
                     <input 
                       type="radio" 
                       name="customization" 
-                      checked={isCustomized}
+                      checked={isCustomized === true}
                       onChange={() => setIsCustomized(true)}
                       className="text-turquesa focus:ring-turquesa"
                     />
@@ -107,7 +156,7 @@ const ProductModal = ({ product, onClose }) => {
                   </label>
                 </div>
                 
-                {isCustomized && (
+                {isCustomized === true && (
                   <div className="animate-fade-in">
                     <input 
                       type="text" 
@@ -138,7 +187,7 @@ const ProductModal = ({ product, onClose }) => {
 
               <button 
                 onClick={handleAddToCart}
-                disabled={isOutOfStock || (isCustomized && !customText.trim())}
+                disabled={isOutOfStock || (isPersonalizable && isCustomized === null) || (isCustomized === true && !customText.trim())}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold transition-all shadow-md ${
                   isOutOfStock 
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
