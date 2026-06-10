@@ -56,6 +56,7 @@ export const ProductsProvider = ({ children }) => {
         const data = results.data
           .filter(item => item.nombre && item.nombre.trim() !== '') // Filter out empty rows by nombre
           .map((item, index) => {
+            const { id, ...rest } = item; // Remove id column if present
             const rawUrls = (item.imagen_url || '').split(/\s*;\s*/).filter(u => u.trim() !== '');
             const processedUrls = rawUrls.map(convertGoogleDriveUrl);
             const imagen_url = processedUrls.length > 0 ? processedUrls[0] : '';
