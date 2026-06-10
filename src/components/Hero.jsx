@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useProducts } from '../data/ProductsContext';
 
 const Hero = () => {
@@ -19,9 +20,9 @@ const Hero = () => {
             {heroData.contenido_extra || "Los mejores productos clínicos y accesorios para ti."}
           </p>
           <div className="pt-4">
-            <a href="#categorias" className="inline-block bg-turquesa text-white px-8 py-3 rounded-full font-semibold hover:bg-turquesa/90 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1">
+            <Link to="/catalogo" className="inline-block bg-turquesa text-white px-8 py-3 rounded-full font-semibold hover:bg-turquesa/90 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1">
               Ver Catálogo
-            </a>
+            </Link>
           </div>
         </div>
 

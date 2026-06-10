@@ -31,12 +31,18 @@ const CategoryPage = () => {
     if (!products.length) return [];
 
     if (slug === 'esenciales') {
-      const byCategory = products.filter(p => p.categoria && p.categoria.toLowerCase().includes('esenciales'));
-      return byCategory.length > 0 ? byCategory : products.filter(p => p.es_personalizable !== 'Sí' && p.id !== '14');
+      const byCategory = products.filter(p => {
+        const cat = (p.categoria || '').toLowerCase().trim();
+        return cat.includes('esencial');
+      });
+      return byCategory.length > 0 ? byCategory : products.filter(p => p.es_personalizable !== 'Sí');
     }
     if (slug === 'personalizables') {
-      const byCategory = products.filter(p => p.categoria && p.categoria.toLowerCase().includes('personalizable'));
-      return byCategory.length > 0 ? byCategory : products.filter(p => p.es_personalizable === 'Sí' && p.id !== '14');
+      const byCategory = products.filter(p => {
+        const cat = (p.categoria || '').toLowerCase().trim();
+        return cat.includes('personaliza') || cat.includes('colección perso') || cat.includes('coleccion perso');
+      });
+      return byCategory.length > 0 ? byCategory : products.filter(p => p.es_personalizable === 'Sí');
     }
     return [];
   }, [products, slug]);
@@ -89,7 +95,7 @@ const CategoryPage = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {filteredProducts.map(product => (
                 <ProductCard 
-                  key={product.id} 
+                  key={product._uid} 
                   product={product} 
                   onClick={setSelectedProduct} 
                 />

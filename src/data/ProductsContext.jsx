@@ -47,21 +47,37 @@ export const ProductsProvider = ({ children }) => {
   }, []);
 
   const fetchProducts = () => {
-    Papa.parse(SHEET_URL, {
+    // Add cache-busting parameter so Google Sheets never serves stale CSV
+    const urlWithCacheBust = `${SHEET_URL}&_t=${Date.now()}`;
+    Papa.parse(urlWithCacheBust, {
       download: true,
       header: true,
       complete: (results) => {
         const data = results.data
-          .filter(item => item.id) // Filter out empty rows
-          .map(item => ({
-            ...item,
-            imagen_url: convertGoogleDriveUrl(item.imagen_url),
-          }));
-        setProducts(data);
+          .filter(item => item.nombre && item.nombre.trim() !== '') // Filter out empty rows by nombre
+          .map((item, index) => {
+            const { id, ...rest } = item; // Remove id column if present
+            return {
+              ...rest,
+              _uid: `row_${index}`,
+              categoria: (item.categoria || '').trim(), // Normalize whitespace
+              imagen_url: convertGoogleDriveUrl(item.imagen_url),
+            };
+          });
         
-        // Find hero data (ID 14)
-        const hero = data.find(item => item.id === '14');
+        // Separate hero/banner from regular products
+        const hero = data.find(item => {
+          const cat = (item.categoria || '').toLowerCase();
+          return cat.includes('banner') || cat.includes('sistema') || cat.includes('inicio');
+        });
         if (hero) setHeroData(hero);
+        
+        // Only set displayable products (exclude banner/system items)
+        const displayProducts = data.filter(item => {
+          const cat = (item.categoria || '').toLowerCase();
+          return !cat.includes('banner') && !cat.includes('sistema') && !cat.includes('inicio');
+        });
+        setProducts(displayProducts);
         
         setLoading(false);
       },
@@ -75,11 +91,11 @@ export const ProductsProvider = ({ children }) => {
   const addToCart = (product, quantity, customization = null) => {
     setCart(prev => {
       const existing = prev.find(item => 
-        item.id === product.id && item.customization === customization
+        item._uid === product._uid && item.customization === customization
       );
       if (existing) {
         return prev.map(item => 
-          item.id === product.id && item.customization === customization
+          item._uid === product._uid && item.customization === customization
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
@@ -90,12 +106,12 @@ export const ProductsProvider = ({ children }) => {
   };
 
   const removeFromCart = (productId, customization = null) => {
-    setCart(prev => prev.filter(item => !(item.id === productId && item.customization === customization)));
+    setCart(prev => prev.filter(item => !(item._uid === productId && item.customization === customization)));
   };
 
   const updateQuantity = (productId, customization, delta) => {
     setCart(prev => prev.map(item => {
-      if (item.id === productId && item.customization === customization) {
+      if (item._uid === productId && item.customization === customization) {
         const newQuantity = Math.max(1, item.quantity + delta);
         return { ...item, quantity: newQuantity };
       }

@@ -63,7 +63,7 @@ const CartDrawer = () => {
             </div>
           ) : (
             cart.map((item, idx) => (
-              <div key={`${item.id}-${item.customization}-${idx}`} className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+              <div key={`${item._uid}-${item.customization}-${idx}`} className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
                 <div className="w-20 h-20 bg-slate-50 rounded-xl overflow-hidden flex-shrink-0 p-2">
                   <img src={item.imagen_url} alt={item.nombre} className="w-full h-full object-contain" />
                 </div>
@@ -80,18 +80,18 @@ const CartDrawer = () => {
                   <div className="mt-auto flex items-center justify-between">
                     <div className="flex items-center bg-slate-100 rounded-lg">
                       <button 
-                        onClick={() => updateQuantity(item.id, item.customization, -1)}
+                        onClick={() => updateQuantity(item._uid, item.customization, -1)}
                         className="px-2 py-1 text-slate-600 hover:bg-slate-200 rounded-l-lg transition-colors"
                       >-</button>
                       <span className="w-6 text-center text-sm font-medium">{item.quantity}</span>
                       <button 
-                        onClick={() => updateQuantity(item.id, item.customization, 1)}
+                        onClick={() => updateQuantity(item._uid, item.customization, 1)}
                         className="px-2 py-1 text-slate-600 hover:bg-slate-200 rounded-r-lg transition-colors"
                       >+</button>
                     </div>
                     
                     <button 
-                      onClick={() => removeFromCart(item.id, item.customization)}
+                      onClick={() => removeFromCart(item._uid, item.customization)}
                       className="text-red-400 hover:text-red-500 transition-colors p-1"
                     >
                       <Trash2 size={16} />

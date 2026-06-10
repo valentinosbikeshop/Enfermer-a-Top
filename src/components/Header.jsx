@@ -43,7 +43,7 @@ const Header = () => {
     if (!searchQuery.trim() || searchQuery.length < 2) return [];
     const q = searchQuery.toLowerCase();
     return products
-      .filter(p => p.id !== '14' && (
+      .filter(p => (
         (p.nombre && p.nombre.toLowerCase().includes(q)) ||
         (p.descripcion_corta && p.descripcion_corta.toLowerCase().includes(q)) ||
         (p.categoria && p.categoria.toLowerCase().includes(q))
@@ -161,7 +161,7 @@ const Header = () => {
                   <div className="max-h-96 overflow-y-auto p-2">
                     {searchResults.map(product => (
                       <button
-                        key={product.id}
+                        key={product._uid}
                         onClick={() => handleProductClick(product)}
                         className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
                       >
@@ -236,7 +236,7 @@ const Header = () => {
               {searchResults.length > 0 ? (
                 searchResults.map(product => (
                   <button
-                    key={product.id}
+                    key={product._uid}
                     onClick={() => handleProductClick(product)}
                     className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
                   >

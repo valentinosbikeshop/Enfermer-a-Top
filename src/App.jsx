@@ -8,6 +8,7 @@ import ProductModal from './components/ProductModal';
 import CartDrawer from './components/CartDrawer';
 import AboutPage from './pages/AboutPage';
 import CategoryPage from './pages/CategoryPage';
+import CatalogPage from './pages/CatalogPage';
 import { Truck, CreditCard, Package, MessageCircle, Instagram, ArrowRight } from 'lucide-react';
 
 const HomePage = () => {
@@ -35,11 +36,11 @@ const HomePage = () => {
       p.etiqueta.toLowerCase().includes('popular') || 
       p.etiqueta.toLowerCase().includes('vendido') ||
       p.etiqueta.toLowerCase().includes('top')
-    ) && p.id !== '14'
+    )
   );
   const displayBestsellers = masVendidos.length > 0 
     ? masVendidos 
-    : products.filter(p => p.id !== '14').slice(0, 10);
+    : products.slice(0, 10);
 
   return (
     <>
@@ -59,7 +60,7 @@ const HomePage = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {displayBestsellers.map(product => (
               <ProductCard 
-                key={product.id} 
+                key={product._uid} 
                 product={product} 
                 onClick={setSelectedProduct} 
               />
@@ -210,6 +211,7 @@ const App = () => {
         <Layout>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/catalogo" element={<CatalogPage />} />
             <Route path="/sobre-nosotros" element={<AboutPage />} />
             <Route path="/categoria/:slug" element={<CategoryPage />} />
           </Routes>
