@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/proxy-video/:id",
+      "destination": "https://drive.usercontent.google.com/download?id=:id&export=view"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
