@@ -29,19 +29,25 @@ const HeroMedia = ({ src, alt, className }) => {
   const isImageExt = src.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i);
 
   if (!isVideoError && !isImageExt && (driveId || src.match(/\.(mp4|webm|ogg)$/i))) {
-    const videoSrc = driveId ? `https://drive.google.com/uc?export=download&id=${driveId}` : src;
+    const videoSrc = driveId ? `https://drive.google.com/uc?export=download&confirm=t&id=${driveId}` : src;
     
     return (
-      <video
-        src={videoSrc}
-        className={className}
-        autoPlay
-        loop
-        muted
-        playsInline
-        onError={() => setIsVideoError(true)}
-        style={{ pointerEvents: 'none' }}
-      />
+      <div className="relative w-full h-full flex items-center justify-center">
+        <video
+          src={videoSrc}
+          className={className}
+          autoPlay
+          loop
+          muted
+          playsInline
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            console.error('Video load failed, falling back to image:', e);
+            setIsVideoError(true);
+          }}
+          // Removing pointerEvents: none so we can see if it actually loaded but just needs interaction
+        />
+      </div>
     );
   }
 
