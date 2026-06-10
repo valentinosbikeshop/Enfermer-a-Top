@@ -1,5 +1,6 @@
 import React from 'react';
 import { useProducts } from '../data/ProductsContext';
+import HeroMedia from '../components/HeroMedia';
 import { Heart, Star, Sparkles, Gift, Users, MapPin, Instagram, MessageCircle } from 'lucide-react';
 
 const AboutPage = () => {
@@ -179,7 +180,7 @@ const AboutPage = () => {
             {heroData && heroData.imagen_url && (
               <div className="flex-shrink-0 relative">
                 <div className="absolute inset-0 bg-rosa/30 rounded-full blur-3xl scale-150"></div>
-                <img 
+                <HeroMedia 
                   src={heroData.imagen_url} 
                   alt="Topita - Mascota oficial de Enfermería Top" 
                   className="relative z-10 w-64 h-64 md:w-80 md:h-80 object-contain drop-shadow-2xl"

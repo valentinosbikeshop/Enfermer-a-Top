@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../data/ProductsContext';
+import HeroMedia from './HeroMedia';
 
 const Hero = () => {
   const { heroData, loading } = useProducts();
@@ -29,7 +30,7 @@ const Hero = () => {
         {/* Hero Image */}
         <div className="flex-1 relative flex justify-center items-center z-10">
           <div className="absolute inset-0 bg-rosa/20 rounded-full blur-3xl transform scale-150"></div>
-          <img 
+          <HeroMedia 
             src={heroData.imagen_url} 
             alt="Topita - Mascota Enfermería Top" 
             className="relative z-10 max-h-[400px] md:max-h-[500px] object-contain drop-shadow-2xl animate-pulse-slow"
