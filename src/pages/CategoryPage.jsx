@@ -70,8 +70,11 @@ const CategoryPage = () => {
     <div className="min-h-screen bg-slate-50">
 
       {/* Category Hero */}
-      <section className={`relative bg-gradient-to-br ${config.gradient} bg-pattern-medical py-16 md:py-24 overflow-hidden`}>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+      <section className={`relative bg-gradient-to-br ${config.gradient} py-16 md:py-24 overflow-hidden`}>
+        {/* Animated Background Pattern */}
+        <div className="absolute inset-0 bg-pattern-medical opacity-100 mask-bottom-fade animate-bg-pan z-0"></div>
+        
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 z-0"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <Link 

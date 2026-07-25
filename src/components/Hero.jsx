@@ -9,8 +9,11 @@ const Hero = () => {
   if (loading || !heroData) return null;
 
   return (
-    <section id="inicio" className="relative w-full bg-primary/5 bg-pattern-medical overflow-hidden">
-      <div className="container mx-auto px-4 py-12 md:py-20 flex flex-col md:flex-row items-center gap-8 min-h-[calc(100vh-140px)]">
+    <section id="inicio" className="relative w-full bg-primary/5 overflow-hidden">
+      {/* Animated Background Pattern */}
+      <div className="absolute inset-0 bg-pattern-medical opacity-50 mask-bottom-fade animate-bg-pan z-0"></div>
+      
+      <div className="container mx-auto px-4 py-12 md:py-20 flex flex-col md:flex-row items-center gap-8 min-h-[calc(100vh-140px)] relative z-10">
         
         {/* Text Content */}
         <div className="flex-1 space-y-6 text-center md:text-left z-10 md:-mt-10">

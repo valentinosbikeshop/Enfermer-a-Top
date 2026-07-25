@@ -59,4 +59,19 @@
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.03); }
   }
+
+  /* Fade out pattern at bottom */
+  .mask-bottom-fade {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+
+  /* Continuous diagonal pan for pattern */
+  .animate-bg-pan {
+    animation: bgPan 60s linear infinite;
+  }
+  @keyframes bgPan {
+    from { background-position: 0 0; }
+    to { background-position: -120px -120px; }
+  }
 }
