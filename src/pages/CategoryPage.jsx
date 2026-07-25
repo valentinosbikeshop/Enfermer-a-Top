@@ -9,8 +9,8 @@ const CATEGORY_CONFIG = {
   esenciales: {
     title: 'Esenciales de Enfermería',
     subtitle: 'Todo lo que necesitas para tu turno: organizado, práctico y bonito.',
-    gradient: 'from-turquesa/10 to-turquesa/5',
-    accent: 'turquesa',
+    gradient: 'from-primary/10 to-primary/5',
+    accent: 'primary',
   },
   personalizables: {
     title: 'Colección Personalizable',
@@ -51,7 +51,7 @@ const CategoryPage = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
         <h2 className="text-2xl font-bold text-slate-800">Categoría no encontrada</h2>
-        <Link to="/" className="text-turquesa font-medium hover:underline">
+        <Link to="/" className="text-primary font-medium hover:underline">
           ← Volver al inicio
         </Link>
       </div>
@@ -61,7 +61,7 @@ const CategoryPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-turquesa"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -71,12 +71,12 @@ const CategoryPage = () => {
 
       {/* Category Hero */}
       <section className={`relative bg-gradient-to-br ${config.gradient} py-16 md:py-24 overflow-hidden`}>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-turquesa/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
         
         <div className="container mx-auto px-4 relative z-10">
           <Link 
             to="/" 
-            className="inline-flex items-center gap-2 text-slate-500 hover:text-turquesa transition-colors mb-6 group"
+            className="inline-flex items-center gap-2 text-slate-500 hover:text-primary transition-colors mb-6 group"
           >
             <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
             Volver al inicio

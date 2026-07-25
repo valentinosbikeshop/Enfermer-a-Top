@@ -70,11 +70,11 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm border-b border-turquesa/20">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm border-b border-primary/20">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
         
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 text-turquesa hover:opacity-80 transition-opacity flex-shrink-0">
+        <Link to="/" className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity flex-shrink-0">
           <span className="font-bold text-2xl tracking-tight">Enfermería Top</span>
         </Link>
 
@@ -82,7 +82,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6 text-slate-600 font-medium">
           <Link 
             to="/" 
-            className={`hover:text-turquesa transition-colors ${location.pathname === '/' ? 'text-turquesa' : ''}`}
+            className={`hover:text-primary transition-colors ${location.pathname === '/' ? 'text-primary' : ''}`}
           >
             Inicio
           </Link>
@@ -91,8 +91,8 @@ const Header = () => {
           <div className="relative" ref={catRef}>
             <button 
               onClick={() => setIsCatOpen(!isCatOpen)}
-              className={`flex items-center gap-1 hover:text-turquesa transition-colors ${
-                location.pathname.startsWith('/categoria') ? 'text-turquesa' : ''
+              className={`flex items-center gap-1 hover:text-primary transition-colors ${
+                location.pathname.startsWith('/categoria') ? 'text-primary' : ''
               }`}
             >
               Categorías
@@ -106,7 +106,7 @@ const Header = () => {
                     <Link
                       key={cat.slug}
                       to={`/categoria/${cat.slug}`}
-                      className="block px-4 py-3 rounded-xl text-slate-700 hover:bg-turquesa/10 hover:text-turquesa transition-colors font-medium"
+                      className="block px-4 py-3 rounded-xl text-slate-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium"
                     >
                       {cat.name}
                     </Link>
@@ -118,7 +118,7 @@ const Header = () => {
 
           <Link 
             to="/sobre-nosotros" 
-            className={`hover:text-turquesa transition-colors ${location.pathname === '/sobre-nosotros' ? 'text-turquesa' : ''}`}
+            className={`hover:text-primary transition-colors ${location.pathname === '/sobre-nosotros' ? 'text-primary' : ''}`}
           >
             Sobre Nosotros
           </Link>
@@ -131,13 +131,13 @@ const Header = () => {
           <div className="relative" ref={searchRef}>
             <button 
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-2 text-slate-600 hover:text-turquesa transition-colors md:hidden"
+              className="p-2 text-slate-600 hover:text-primary transition-colors md:hidden"
             >
               <Search size={22} />
             </button>
 
             {/* Desktop search input always visible */}
-            <div className="hidden md:flex items-center bg-slate-100 rounded-full px-4 py-2 gap-2 w-56 focus-within:ring-2 focus-within:ring-turquesa/30 focus-within:bg-white transition-all">
+            <div className="hidden md:flex items-center bg-slate-100 rounded-full px-4 py-2 gap-2 w-56 focus-within:ring-2 focus-within:ring-primary/30 focus-within:bg-white transition-all">
               <Search size={18} className="text-slate-400 flex-shrink-0" />
               <input
                 type="text"
@@ -170,7 +170,7 @@ const Header = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-slate-800 truncate">{product.nombre}</p>
-                          <p className="text-xs text-turquesa font-semibold">
+                          <p className="text-xs text-primary font-semibold">
                             {formatPrice(product.precio_oferta && product.precio_oferta.trim() !== '' ? product.precio_oferta : product.precio)}
                           </p>
                         </div>
@@ -189,7 +189,7 @@ const Header = () => {
           {/* Cart */}
           <button 
             onClick={() => setIsCartOpen(true)}
-            className="relative p-2 text-slate-600 hover:text-turquesa transition-colors"
+            className="relative p-2 text-slate-600 hover:text-primary transition-colors"
           >
             <ShoppingCart size={24} />
             {cartCount > 0 && (
@@ -213,7 +213,7 @@ const Header = () => {
       {/* Mobile Search Bar (when toggled) */}
       {isSearchOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 px-4 py-3" ref={searchRef}>
-          <div className="flex items-center bg-slate-100 rounded-full px-4 py-2.5 gap-2 focus-within:ring-2 focus-within:ring-turquesa/30">
+          <div className="flex items-center bg-slate-100 rounded-full px-4 py-2.5 gap-2 focus-within:ring-2 focus-within:ring-primary/30">
             <Search size={18} className="text-slate-400" />
             <input
               type="text"
@@ -245,7 +245,7 @@ const Header = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-slate-800 truncate">{product.nombre}</p>
-                      <p className="text-xs text-turquesa font-semibold">
+                      <p className="text-xs text-primary font-semibold">
                         {formatPrice(product.precio_oferta && product.precio_oferta.trim() !== '' ? product.precio_oferta : product.precio)}
                       </p>
                     </div>
@@ -265,7 +265,7 @@ const Header = () => {
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-1">
             <Link 
               to="/" 
-              className="px-4 py-3 rounded-xl text-slate-700 hover:bg-turquesa/10 hover:text-turquesa transition-colors font-medium"
+              className="px-4 py-3 rounded-xl text-slate-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium"
             >
               Inicio
             </Link>
@@ -275,7 +275,7 @@ const Header = () => {
               <Link
                 key={cat.slug}
                 to={`/categoria/${cat.slug}`}
-                className="px-4 py-3 rounded-xl text-slate-700 hover:bg-turquesa/10 hover:text-turquesa transition-colors font-medium pl-8"
+                className="px-4 py-3 rounded-xl text-slate-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium pl-8"
               >
                 {cat.name}
               </Link>
@@ -283,7 +283,7 @@ const Header = () => {
             
             <Link 
               to="/sobre-nosotros" 
-              className="px-4 py-3 rounded-xl text-slate-700 hover:bg-turquesa/10 hover:text-turquesa transition-colors font-medium"
+              className="px-4 py-3 rounded-xl text-slate-700 hover:bg-primary/10 hover:text-primary transition-colors font-medium"
             >
               Sobre Nosotros
             </Link>

@@ -72,7 +72,7 @@ const CartDrawer = () => {
                   <h4 className="font-semibold text-slate-800 text-sm line-clamp-2 mb-1">{item.nombre}</h4>
                   
                   {item.customization && (
-                    <span className="text-xs text-turquesa font-medium mb-2">
+                    <span className="text-xs text-primary font-medium mb-2">
                       Pers: {item.customization}
                     </span>
                   )}

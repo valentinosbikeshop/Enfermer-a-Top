@@ -25,7 +25,7 @@ const HomePage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-turquesa"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -78,12 +78,12 @@ const HomePage = () => {
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <Link 
               to="/categoria/esenciales"
-              className="group relative bg-gradient-to-br from-turquesa/10 to-turquesa/5 rounded-3xl p-8 md:p-10 border border-turquesa/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+              className="group relative bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8 md:p-10 border border-primary/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
             >
-              <div className="absolute top-0 right-0 w-40 h-40 bg-turquesa/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
               <h3 className="text-2xl font-bold text-slate-800 mb-2 relative z-10">Esenciales de Enfermería</h3>
               <p className="text-slate-600 mb-4 relative z-10">Todo lo que necesitas para tu turno: organizado, práctico y bonito.</p>
-              <span className="inline-flex items-center gap-1 text-turquesa font-semibold group-hover:gap-2 transition-all relative z-10">
+              <span className="inline-flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all relative z-10">
                 Ver productos <ArrowRight size={18} />
               </span>
             </Link>
@@ -103,7 +103,7 @@ const HomePage = () => {
         </section>
 
         {/* Entregas y Pagos */}
-        <section id="entregas-pagos" className="bg-turquesa/5 rounded-3xl p-8 md:p-12">
+        <section id="entregas-pagos" className="bg-primary/5 rounded-3xl p-8 md:p-12">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-800 mb-4">Entregas y Pagos</h2>
             <p className="text-slate-600 max-w-2xl mx-auto">
@@ -123,7 +123,7 @@ const HomePage = () => {
             </div>
 
             <div className="bg-white p-8 rounded-2xl shadow-sm text-center flex flex-col items-center">
-              <div className="w-16 h-16 bg-turquesa/20 text-turquesa rounded-full flex items-center justify-center mb-6">
+              <div className="w-16 h-16 bg-primary/20 text-primary rounded-full flex items-center justify-center mb-6">
                 <Truck size={32} />
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-3">Envíos a todo Chile</h3>

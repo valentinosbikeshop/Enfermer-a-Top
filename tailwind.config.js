@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        turquesa: '#40E0D0',
+        primary: '#DC5A51',
         rosa: '#FFD1DC',
       },
       fontFamily: {

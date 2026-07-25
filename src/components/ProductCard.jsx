@@ -87,7 +87,7 @@ const ProductCard = ({ product, onClick }) => {
               {imagesToRender.map((_, idx) => (
                 <div 
                   key={idx} 
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImgIndex ? 'bg-turquesa w-3' : 'bg-slate-300'}`}
+                  className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImgIndex ? 'bg-primary w-3' : 'bg-slate-300'}`}
                 />
               ))}
             </div>
@@ -110,7 +110,7 @@ const ProductCard = ({ product, onClick }) => {
         <div className="flex items-center gap-2 mt-auto">
           {hasOffer ? (
             <>
-              <span className="text-xl font-bold text-turquesa">{formatPrice(precio_oferta)}</span>
+              <span className="text-xl font-bold text-primary">{formatPrice(precio_oferta)}</span>
               <span className="text-sm text-slate-400 line-through">{formatPrice(precio)}</span>
             </>
           ) : (

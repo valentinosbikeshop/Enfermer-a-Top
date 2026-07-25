@@ -38,16 +38,16 @@ const AboutPage = () => {
     <div className="min-h-screen bg-slate-50">
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-turquesa/10 via-rosa/10 to-turquesa/5 py-20 md:py-28 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-turquesa/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+      <section className="relative bg-gradient-to-br from-primary/10 via-rosa/10 to-primary/5 py-20 md:py-28 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-rosa/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
         
         <div className="container mx-auto px-4 relative z-10 text-center">
-          <span className="inline-block bg-turquesa/15 text-turquesa font-semibold text-sm px-5 py-2 rounded-full mb-6">
+          <span className="inline-block bg-primary/15 text-primary font-semibold text-sm px-5 py-2 rounded-full mb-6">
             Sobre Nosotros
           </span>
           <h1 className="text-4xl md:text-6xl font-bold text-slate-800 mb-6 leading-tight">
-            Conoce <span className="text-turquesa">Enfermería Top</span>
+            Conoce <span className="text-primary">Enfermería Top</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
             Productos con amor para quienes cuidan con el corazón.
@@ -60,7 +60,7 @@ const AboutPage = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 bg-turquesa/15 text-turquesa rounded-2xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 bg-primary/15 text-primary rounded-2xl flex items-center justify-center flex-shrink-0">
                 <Heart size={24} />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-800">Nuestra Historia</h2>
@@ -74,7 +74,7 @@ const AboutPage = () => {
                 Todo comenzó cuando nos dimos cuenta de que las profesionales de la salud pasaban sus turnos luchando contra el desorden: guantes por un lado, tiritas por otro, agendas que se perdían, y cero tiempo para ellas mismas.
               </p>
               <p>
-                Así que decidimos crear productos que realmente sirvieran: <span className="text-turquesa font-medium">riñoneras inteligentes</span>, <span className="text-turquesa font-medium">agendas diseñadas por y para enfermeras</span>, kits de organización, cartucheras resistentes y regalos personalizados que emocionan.
+                Así que decidimos crear productos que realmente sirvieran: <span className="text-primary font-medium">riñoneras inteligentes</span>, <span className="text-primary font-medium">agendas diseñadas por y para enfermeras</span>, kits de organización, cartucheras resistentes y regalos personalizados que emocionan.
               </p>
               <p>
                 Lo que empezó como una pequeña tienda en Instagram hoy es una comunidad de más de <span className="font-bold text-slate-800">15.000 personas</span> que comparten el mismo amor por la profesión y por los detalles que hacen la diferencia.
@@ -90,8 +90,8 @@ const AboutPage = () => {
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
             
             {/* Misión */}
-            <div className="bg-gradient-to-br from-turquesa/5 to-turquesa/10 rounded-3xl p-8 md:p-10 border border-turquesa/10">
-              <div className="w-14 h-14 bg-turquesa/20 text-turquesa rounded-2xl flex items-center justify-center mb-6">
+            <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl p-8 md:p-10 border border-primary/10">
+              <div className="w-14 h-14 bg-primary/20 text-primary rounded-2xl flex items-center justify-center mb-6">
                 <Star size={28} />
               </div>
               <h3 className="text-2xl font-bold text-slate-800 mb-4">Misión</h3>
@@ -120,7 +120,7 @@ const AboutPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Qué nos hace diferentes</h2>
-            <div className="w-20 h-1 bg-turquesa rounded-full mx-auto"></div>
+            <div className="w-20 h-1 bg-primary rounded-full mx-auto"></div>
           </div>
           
           <div className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -129,7 +129,7 @@ const AboutPage = () => {
                 key={idx} 
                 className="bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group"
               >
-                <div className="w-14 h-14 bg-turquesa/10 text-turquesa rounded-2xl flex items-center justify-center mb-5 group-hover:bg-turquesa group-hover:text-white transition-colors duration-300">
+                <div className="w-14 h-14 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                   {item.icon}
                 </div>
                 <h3 className="text-lg font-bold text-slate-800 mb-3">{item.title}</h3>
@@ -158,7 +158,7 @@ const AboutPage = () => {
             ].map((item, idx) => (
               <div 
                 key={idx} 
-                className="flex items-start gap-5 bg-gradient-to-r from-slate-50 to-white rounded-2xl p-6 border border-slate-100 hover:shadow-md hover:border-turquesa/20 transition-all duration-300"
+                className="flex items-start gap-5 bg-gradient-to-r from-slate-50 to-white rounded-2xl p-6 border border-slate-100 hover:shadow-md hover:border-primary/20 transition-all duration-300"
               >
                 <span className="text-3xl flex-shrink-0">{item.emoji}</span>
                 <div>
@@ -172,7 +172,7 @@ const AboutPage = () => {
       </section>
 
       {/* Topita Section */}
-      <section className="py-20 bg-gradient-to-br from-rosa/10 via-white to-turquesa/5 overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-rosa/10 via-white to-primary/5 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12">
             
@@ -201,7 +201,7 @@ const AboutPage = () => {
                   En marzo de 2026 llegó <span className="font-semibold text-slate-800">Topita</span>, nuestra adorable mascota oficial.
                 </p>
                 <p>
-                  Topita es un osito blanco con uniforme de enfermera que representa todo lo que queremos transmitir: <span className="text-turquesa font-medium">alegría, apoyo, ternura y profesionalismo</span>.
+                  Topita es un osito blanco con uniforme de enfermera que representa todo lo que queremos transmitir: <span className="text-primary font-medium">alegría, apoyo, ternura y profesionalismo</span>.
                 </p>
                 <p>
                   Ella aparece en nuestros reels, diseños y empaques para recordarte que, aunque el turno sea pesado, siempre hay un motivo para sonreír. Topita ya es parte de la familia de miles de enfermeras que la reciben con cariño en cada pedido.
@@ -216,7 +216,7 @@ const AboutPage = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="w-16 h-16 bg-turquesa/15 text-turquesa rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-primary/15 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
               <MapPin size={32} />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3">¿Dónde estamos?</h2>
@@ -228,7 +228,7 @@ const AboutPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-turquesa to-turquesa/80">
+      <section className="py-20 bg-gradient-to-r from-primary to-primary/80">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">¿Quieres conocernos más?</h2>
           <p className="text-white/80 text-lg max-w-2xl mx-auto mb-4">

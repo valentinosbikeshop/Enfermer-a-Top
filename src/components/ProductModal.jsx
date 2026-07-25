@@ -117,7 +117,7 @@ const ProductModal = ({ product, onClose }) => {
                   {imagesToRender.map((_, idx) => (
                     <div 
                       key={idx} 
-                      className={`h-2 rounded-full transition-all ${idx === (currentImgIndex % imagesToRender.length) ? 'bg-turquesa w-6' : 'bg-slate-300 w-2'}`}
+                      className={`h-2 rounded-full transition-all ${idx === (currentImgIndex % imagesToRender.length) ? 'bg-primary w-6' : 'bg-slate-300 w-2'}`}
                     />
                   ))}
                 </div>
@@ -139,7 +139,7 @@ const ProductModal = ({ product, onClose }) => {
             <div className="flex items-end gap-3 mb-6">
               {hasOffer ? (
                 <>
-                  <span className="text-3xl font-bold text-turquesa">{formatPrice(product.precio_oferta)}</span>
+                  <span className="text-3xl font-bold text-primary">{formatPrice(product.precio_oferta)}</span>
                   <span className="text-lg text-slate-400 line-through pb-1">{formatPrice(product.precio)}</span>
                 </>
               ) : (
@@ -161,7 +161,7 @@ const ProductModal = ({ product, onClose }) => {
                       name="customization" 
                       checked={isCustomized === false}
                       onChange={() => setIsCustomized(false)}
-                      className="text-turquesa focus:ring-turquesa"
+                      className="text-primary focus:ring-primary"
                     />
                     <span className="text-slate-700">Estándar</span>
                   </label>
@@ -171,7 +171,7 @@ const ProductModal = ({ product, onClose }) => {
                       name="customization" 
                       checked={isCustomized === true}
                       onChange={() => setIsCustomized(true)}
-                      className="text-turquesa focus:ring-turquesa"
+                      className="text-primary focus:ring-primary"
                     />
                     <span className="text-slate-700">Personalizado</span>
                   </label>
@@ -184,7 +184,7 @@ const ProductModal = ({ product, onClose }) => {
                       placeholder="Ingresa nombre o detalle clínico..." 
                       value={customText}
                       onChange={(e) => setCustomText(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-turquesa focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                     />
                   </div>
                 )}
@@ -212,7 +212,7 @@ const ProductModal = ({ product, onClose }) => {
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold transition-all shadow-md ${
                   isOutOfStock 
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                    : 'bg-turquesa text-white hover:bg-turquesa/90 hover:shadow-lg transform hover:-translate-y-1'
+                    : 'bg-primary text-white hover:bg-primary/90 hover:shadow-lg transform hover:-translate-y-1'
                 }`}
               >
                 <ShoppingBag size={20} />

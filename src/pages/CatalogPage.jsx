@@ -17,7 +17,7 @@ const CatalogPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-turquesa"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -45,16 +45,16 @@ const CatalogPage = () => {
     <div className="min-h-screen bg-slate-50">
 
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-turquesa/10 via-rosa/5 to-turquesa/5 py-16 md:py-24 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-turquesa/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+      <section className="relative bg-gradient-to-br from-primary/10 via-rosa/5 to-primary/5 py-16 md:py-24 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-rosa/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
         
         <div className="container mx-auto px-4 relative z-10 text-center">
-          <span className="inline-block bg-turquesa/15 text-turquesa font-semibold text-sm px-5 py-2 rounded-full mb-6">
+          <span className="inline-block bg-primary/15 text-primary font-semibold text-sm px-5 py-2 rounded-full mb-6">
             Catálogo Completo
           </span>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4">
-            Todos nuestros <span className="text-turquesa">Productos</span>
+            Todos nuestros <span className="text-primary">Productos</span>
           </h1>
           <p className="text-lg text-slate-600 max-w-xl mx-auto">
             Encuentra todo lo que necesitas organizado por categorías. ¡Elige lo que más te guste!
@@ -72,7 +72,7 @@ const CatalogPage = () => {
         {esenciales.length > 0 && (
           <section id="esenciales">
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-1.5 h-10 bg-turquesa rounded-full"></div>
+              <div className="w-1.5 h-10 bg-primary rounded-full"></div>
               <div>
                 <h2 className="text-2xl md:text-3xl font-bold text-slate-800">Esenciales de Enfermería</h2>
                 <p className="text-slate-500 text-sm mt-1">{esenciales.length} productos</p>
