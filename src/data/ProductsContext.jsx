@@ -66,6 +66,10 @@ export const ProductsProvider = ({ children }) => {
               categoria: (item.categoria || '').trim(), // Normalize whitespace
               imagen_url: imagen_url,
               imagenes: processedUrls,
+              Peso_kg: parseFloat(item.Peso_kg?.toString().replace(',', '.') || '0') || 0,
+              Largo_cm: parseFloat(item.Largo_cm?.toString().replace(',', '.') || '0') || 0,
+              Ancho_cm: parseFloat(item.Ancho_cm?.toString().replace(',', '.') || '0') || 0,
+              Alto_cm: parseFloat(item.Alto_cm?.toString().replace(',', '.') || '0') || 0,
             };
           });
         
