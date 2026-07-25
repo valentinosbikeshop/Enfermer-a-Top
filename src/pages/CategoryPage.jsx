@@ -23,7 +23,6 @@ const CATEGORY_CONFIG = {
 const CategoryPage = () => {
   const { slug } = useParams();
   const { products, loading } = useProducts();
-  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const config = CATEGORY_CONFIG[slug];
 
@@ -100,7 +99,7 @@ const CategoryPage = () => {
                 <ProductCard 
                   key={product._uid} 
                   product={product} 
-                  onClick={setSelectedProduct} 
+                  onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
                 />
               ))}
             </div>
@@ -112,8 +111,6 @@ const CategoryPage = () => {
         </div>
       </section>
 
-      {/* Product Modal */}
-      <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
     </div>
   );
 };

@@ -41,13 +41,49 @@ const Header = () => {
   // Search results
   const searchResults = useMemo(() => {
     if (!searchQuery.trim() || searchQuery.length < 2) return [];
-    const q = searchQuery.toLowerCase();
+    
+    const rawQuery = searchQuery.toLowerCase().trim();
+    const synonyms = {
+      'libreta': 'agenda',
+      'libretas': 'agenda',
+      'cuaderno': 'agenda',
+      'cuadernos': 'agenda',
+      'anotador': 'agenda',
+      'fonendo': 'estetoscopio',
+      'fonendoscopio': 'estetoscopio',
+      'lapiz': 'bolígrafo',
+      'lápiz': 'bolígrafo',
+      'lapices': 'bolígrafo',
+      'lápices': 'bolígrafo',
+      'uniforme': 'scrub',
+      'ropa': 'scrub',
+      'traje': 'scrub'
+    };
+
+    const searchTerms = [rawQuery];
+    
+    // Add exact synonym match
+    if (synonyms[rawQuery]) {
+      searchTerms.push(synonyms[rawQuery]);
+    }
+
+    // Also check if rawQuery is a substring of any synonym key
+    Object.keys(synonyms).forEach(key => {
+      if (key.includes(rawQuery) || rawQuery.includes(key)) {
+        searchTerms.push(synonyms[key]);
+      }
+    });
+
+    const uniqueTerms = [...new Set(searchTerms)];
+
     return products
-      .filter(p => (
-        (p.nombre && p.nombre.toLowerCase().includes(q)) ||
-        (p.descripcion_corta && p.descripcion_corta.toLowerCase().includes(q)) ||
-        (p.categoria && p.categoria.toLowerCase().includes(q))
-      ))
+      .filter(p => {
+        const name = (p.nombre || '').toLowerCase();
+        const desc = (p.descripcion_corta || '').toLowerCase();
+        const cat = (p.categoria || '').toLowerCase();
+        
+        return uniqueTerms.some(t => name.includes(t) || desc.includes(t) || cat.includes(t));
+      })
       .slice(0, 6);
   }, [searchQuery, products]);
 

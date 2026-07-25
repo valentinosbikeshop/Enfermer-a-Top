@@ -5,14 +5,6 @@ import ProductModal from '../components/ProductModal';
 
 const CatalogPage = () => {
   const { products, loading } = useProducts();
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  // Listen for search product modal events
-  useEffect(() => {
-    const handler = (e) => setSelectedProduct(e.detail);
-    window.addEventListener('openProductModal', handler);
-    return () => window.removeEventListener('openProductModal', handler);
-  }, []);
 
   if (loading) {
     return (
@@ -87,7 +79,7 @@ const CatalogPage = () => {
                 <ProductCard 
                   key={product._uid} 
                   product={product} 
-                  onClick={setSelectedProduct} 
+                  onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
                 />
               ))}
             </div>
@@ -119,7 +111,7 @@ const CatalogPage = () => {
                 <ProductCard 
                   key={product._uid} 
                   product={product} 
-                  onClick={setSelectedProduct} 
+                  onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
                 />
               ))}
             </div>
@@ -142,7 +134,7 @@ const CatalogPage = () => {
                 <ProductCard 
                   key={product._uid} 
                   product={product} 
-                  onClick={setSelectedProduct} 
+                  onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
                 />
               ))}
             </div>
@@ -150,8 +142,6 @@ const CatalogPage = () => {
         )}
 
       </div>
-
-      <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
     </div>
   );
 };
