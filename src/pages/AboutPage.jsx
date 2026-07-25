@@ -38,7 +38,7 @@ const AboutPage = () => {
     <div className="min-h-screen bg-slate-50">
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/10 via-rosa/10 to-primary/5 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary/10 via-rosa/10 to-primary/5 bg-pattern-medical py-20 md:py-28 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-rosa/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
         
