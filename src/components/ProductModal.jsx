@@ -78,16 +78,16 @@ const ProductModal = ({ product, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-md transition-opacity">
       <div 
-        className="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl relative animate-fade-in-up"
+        className="bg-white rounded-[32px] w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative animate-fade-in-up flex flex-col md:flex-row"
         onClick={(e) => e.stopPropagation()}
       >
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors z-10"
+          className="absolute top-5 right-5 p-2 bg-white/50 backdrop-blur-sm rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors z-30 hover-spring hover:scale-110 shadow-sm"
         >
-          <X size={24} />
+          <X size={24} strokeWidth={2.5} />
         </button>
 
         <div className="flex flex-col md:flex-row h-full">
@@ -133,17 +133,17 @@ const ProductModal = ({ product, onClose }) => {
           </div>
 
           {/* Details */}
-          <div className="md:w-1/2 p-8 md:p-10 flex flex-col">
-            <h2 className="text-3xl font-bold text-slate-800 mb-2">{product.nombre}</h2>
+          <div className="md:w-1/2 p-8 md:p-12 flex flex-col">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-3 tracking-tight leading-tight">{product.nombre}</h2>
             
-            <div className="flex items-end gap-3 mb-6">
+            <div className="flex items-end gap-3 mb-8">
               {hasOffer ? (
                 <>
-                  <span className="text-3xl font-bold text-primary">{formatPrice(product.precio_oferta)}</span>
-                  <span className="text-lg text-slate-400 line-through pb-1">{formatPrice(product.precio)}</span>
+                  <span className="text-3xl font-black text-primary">{formatPrice(product.precio_oferta)}</span>
+                  <span className="text-xl text-slate-400 line-through pb-1 font-medium">{formatPrice(product.precio)}</span>
                 </>
               ) : (
-                <span className="text-3xl font-bold text-slate-800">{formatPrice(product.precio)}</span>
+                <span className="text-3xl font-black text-slate-800">{formatPrice(product.precio)}</span>
               )}
             </div>
 
@@ -209,13 +209,13 @@ const ProductModal = ({ product, onClose }) => {
               <button 
                 onClick={handleAddToCart}
                 disabled={isOutOfStock || (isPersonalizable && isCustomized === null) || (isCustomized === true && !customText.trim())}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full font-bold transition-all shadow-md ${
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full font-extrabold transition-all duration-300 hover-spring ${
                   isOutOfStock 
-                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                    : 'bg-primary text-white hover:bg-primary/90 hover:shadow-lg transform hover:-translate-y-1'
+                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                    : 'bg-primary text-white hover:bg-[#c94d45] hover:shadow-[0_8px_20px_-6px_rgba(220,90,81,0.5)] transform hover:-translate-y-1'
                 }`}
               >
-                <ShoppingBag size={20} />
+                <ShoppingBag size={20} strokeWidth={2.5} />
                 {isOutOfStock ? 'Agotado' : 'Agregar al Carrito'}
               </button>
             </div>

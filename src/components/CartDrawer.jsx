@@ -41,16 +41,16 @@ const CartDrawer = () => {
       ></div>
 
       {/* Drawer */}
-      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col transform transition-transform duration-300 ease-in-out">
+      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-[rgba(0,0,0,0.08)_0px_4px_24px] z-50 flex flex-col transform transition-fluid duration-500">
         
         {/* Header */}
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-          <h2 className="text-xl font-bold text-slate-800">Tu Carrito</h2>
+        <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-white/80 backdrop-blur-md">
+          <h2 className="text-2xl font-extrabold text-slate-800 tracking-tight">Tu Carrito</h2>
           <button 
             onClick={() => setIsCartOpen(false)}
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-full transition-colors"
+            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors hover:scale-105 active:scale-95"
           >
-            <X size={20} />
+            <X size={20} strokeWidth={2.5} />
           </button>
         </div>
 

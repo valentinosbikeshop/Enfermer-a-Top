@@ -50,44 +50,44 @@ const ProductCard = ({ product, onClick }) => {
   return (
     <div 
       onClick={() => onClick(product)}
-      className="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex flex-col h-full transform hover:-translate-y-1"
+      className="group relative bg-white rounded-[24px] shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 overflow-hidden cursor-pointer flex flex-col h-full transform hover:-translate-y-1 border border-slate-100"
     >
       {/* Badges */}
       {etiqueta && (
-        <div className={`absolute top-4 left-4 z-10 px-3 py-1 text-xs font-bold rounded-full text-white ${
-          etiqueta.toLowerCase() === 'nuevo' ? 'bg-green-500' : 'bg-rosa text-slate-800'
+        <div className={`absolute top-4 left-4 z-10 px-3 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-full text-white shadow-sm ${
+          etiqueta.toLowerCase() === 'nuevo' ? 'bg-[#20bd5a]' : 'bg-primary text-white'
         }`}>
           {etiqueta}
         </div>
       )}
       
       {isOutOfStock && (
-        <div className="absolute top-4 right-4 z-10 px-3 py-1 text-xs font-bold rounded-full bg-red-500 text-white">
+        <div className="absolute top-4 right-4 z-10 px-3 py-1.5 text-[11px] font-black uppercase tracking-widest rounded-full bg-slate-800 text-white shadow-sm">
           Agotado
         </div>
       )}
 
       {/* Image Container */}
-      <div className="relative aspect-square overflow-hidden bg-slate-50 flex items-center justify-center p-4">
+      <div className="relative aspect-square overflow-hidden bg-slate-50/50 flex items-center justify-center p-6">
         {hasMultipleImages && (
           <>
             <button 
               onClick={prevImage}
-              className="absolute left-2 z-20 bg-white/80 backdrop-blur text-slate-800 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+              className="absolute left-3 z-20 bg-white/80 backdrop-blur-md text-slate-800 p-2 rounded-full opacity-0 group-hover:opacity-100 hover-spring hover:bg-white hover:scale-110 shadow-sm"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={18} strokeWidth={2.5} />
             </button>
             <button 
               onClick={nextImage}
-              className="absolute right-2 z-20 bg-white/80 backdrop-blur text-slate-800 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+              className="absolute right-3 z-20 bg-white/80 backdrop-blur-md text-slate-800 p-2 rounded-full opacity-0 group-hover:opacity-100 hover-spring hover:bg-white hover:scale-110 shadow-sm"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={18} strokeWidth={2.5} />
             </button>
-            <div className="absolute bottom-3 flex gap-1.5 z-20">
+            <div className="absolute bottom-4 flex gap-1.5 z-20">
               {imagesToRender.map((_, idx) => (
                 <div 
                   key={idx} 
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${idx === currentImgIndex ? 'bg-primary w-3' : 'bg-slate-300'}`}
+                  className={`w-1.5 h-1.5 rounded-full transition-fluid duration-300 ${idx === currentImgIndex ? 'bg-primary w-4' : 'bg-slate-300'}`}
                 />
               ))}
             </div>
@@ -97,7 +97,7 @@ const ProductCard = ({ product, onClick }) => {
           key={currentImgIndex}
           src={imagesToRender[currentImgIndex]} 
           alt={nombre} 
-          className={`object-contain max-h-full transition-transform duration-500 animate-fade-in group-hover:scale-105 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+          className={`object-contain max-h-full transition-transform duration-700 hover-spring animate-fade-in group-hover:scale-110 ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
           loading="lazy"
         />
       </div>

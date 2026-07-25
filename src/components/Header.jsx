@@ -137,7 +137,7 @@ const Header = () => {
             </button>
 
             {/* Desktop search input always visible */}
-            <div className="hidden md:flex items-center bg-slate-100 rounded-full px-4 py-2 gap-2 w-56 focus-within:ring-2 focus-within:ring-primary/30 focus-within:bg-white transition-all">
+            <div className="hidden md:flex items-center bg-slate-100/50 rounded-full px-4 py-2 gap-2 w-64 focus-within:ring-2 focus-within:ring-primary/40 focus-within:bg-white transition-all duration-300 shadow-inner">
               <Search size={18} className="text-slate-400 flex-shrink-0" />
               <input
                 type="text"
@@ -156,7 +156,7 @@ const Header = () => {
 
             {/* Search Results Dropdown */}
             {isSearchOpen && searchQuery.length >= 2 && (
-              <div className="absolute top-full right-0 md:left-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-50">
+              <div className="absolute top-full right-0 md:left-0 mt-3 w-80 bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_12px_40px_-10px_rgba(0,0,0,0.15)] border border-slate-100/50 overflow-hidden z-50 animate-fade-in-up">
                 {searchResults.length > 0 ? (
                   <div className="max-h-96 overflow-y-auto p-2">
                     {searchResults.map(product => (
@@ -189,11 +189,11 @@ const Header = () => {
           {/* Cart */}
           <button 
             onClick={() => setIsCartOpen(true)}
-            className="relative p-2 text-slate-600 hover:text-primary transition-colors"
+            className="relative p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-primary rounded-full transition-all duration-300 hover-spring hover:scale-105 active:scale-95"
           >
-            <ShoppingCart size={24} />
+            <ShoppingCart size={22} strokeWidth={2.5} />
             {cartCount > 0 && (
-              <span className="absolute top-0 right-0 bg-rosa text-slate-800 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full transform translate-x-1 -translate-y-1">
+              <span className="absolute top-0 right-0 bg-rosa text-slate-900 text-[10px] font-black w-[22px] h-[22px] flex items-center justify-center rounded-full transform translate-x-1 -translate-y-1 shadow-sm animate-fade-in">
                 {cartCount}
               </span>
             )}

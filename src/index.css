@@ -6,24 +6,40 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-800 antialiased selection:bg-primary selection:text-white;
+    @apply bg-slate-50 text-slate-800 antialiased selection:bg-primary selection:text-white tracking-tight;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-semibold;
+  }
+  p {
+    @apply leading-relaxed;
   }
 }
 
 @layer utilities {
   /* Fade in up animation */
   .animate-fade-in-up {
-    animation: fadeInUp 0.25s ease-out;
+    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(12px) scale(0.98);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
+  }
+
+  /* Fluid slide for drawers */
+  .transition-fluid {
+    transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  /* Smooth spring hover */
+  .hover-spring {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   /* Fade in */
