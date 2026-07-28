@@ -4,7 +4,7 @@ import ProductCard from '../components/ProductCard';
 import ProductModal from '../components/ProductModal';
 
 const CatalogPage = () => {
-  const { products, loading } = useProducts();
+  const { products, dynamicCategories, loading } = useProducts();
 
   if (loading) {
     return (
@@ -13,25 +13,6 @@ const CatalogPage = () => {
       </div>
     );
   }
-
-  // Split products by category
-  const esenciales = products.filter(p => {
-    const cat = (p.categoria || '').toLowerCase().trim();
-    return cat.includes('esencial');
-  });
-
-  const personalizables = products.filter(p => {
-    const cat = (p.categoria || '').toLowerCase().trim();
-    return cat.includes('personaliza') || cat.includes('colección perso') || cat.includes('coleccion perso');
-  });
-
-  // Products that don't match either category (catch-all)
-  const otros = products.filter(p => {
-    const cat = (p.categoria || '').toLowerCase().trim();
-    const isEsencial = cat.includes('esencial');
-    const isPerso = cat.includes('personaliza') || cat.includes('colección perso') || cat.includes('coleccion perso');
-    return !isEsencial && !isPerso;
-  });
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -54,92 +35,70 @@ const CatalogPage = () => {
           <p className="text-lg text-slate-600 max-w-xl mx-auto">
             Encuentra todo lo que necesitas organizado por categorías. ¡Elige lo que más te guste!
           </p>
-          <div className="mt-6 flex justify-center gap-4 text-sm text-slate-500">
-            <span className="bg-white px-4 py-2 rounded-full shadow-sm">{esenciales.length} Esenciales</span>
-            <span className="bg-white px-4 py-2 rounded-full shadow-sm">{personalizables.length} Personalizables</span>
+          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-slate-500">
+            {dynamicCategories && dynamicCategories.map(cat => (
+              <span key={cat.slug} className="bg-white px-4 py-2 rounded-full shadow-sm">{cat.count} {cat.name}</span>
+            ))}
           </div>
         </div>
       </section>
 
       <div className="container mx-auto px-4 py-16 space-y-20">
 
-        {/* Esenciales */}
-        {esenciales.length > 0 && (
-          <section id="esenciales">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-1.5 h-10 bg-primary rounded-full"></div>
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-800">Esenciales de Enfermería</h2>
-                <p className="text-slate-500 text-sm mt-1">{esenciales.length} productos</p>
+        {/* Dynamic Categories */}
+        {dynamicCategories && dynamicCategories.map(cat => {
+          const catProducts = products.filter(p => p.categoria && p.categoria.trim() === cat.name);
+          if (catProducts.length === 0) return null;
+          
+          return (
+            <section key={cat.slug} id={cat.slug}>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-1.5 h-10 bg-primary rounded-full"></div>
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-800">{cat.name}</h2>
+                  <p className="text-slate-500 text-sm mt-1">{catProducts.length} productos</p>
+                </div>
               </div>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {esenciales.map(product => (
-                <ProductCard 
-                  key={product._uid} 
-                  product={product} 
-                  onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Divider */}
-        {esenciales.length > 0 && personalizables.length > 0 && (
-          <div className="flex items-center gap-6">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
-            <span className="text-slate-300 text-sm font-medium">✦</span>
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
-          </div>
-        )}
-
-        {/* Personalizables */}
-        {personalizables.length > 0 && (
-          <section id="personalizables">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-1.5 h-10 bg-rosa rounded-full"></div>
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-800">Colección Personalizable</h2>
-                <p className="text-slate-500 text-sm mt-1">{personalizables.length} productos</p>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                {catProducts.map(product => (
+                  <ProductCard 
+                    key={product._uid} 
+                    product={product} 
+                    onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
+                  />
+                ))}
               </div>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {personalizables.map(product => (
-                <ProductCard 
-                  key={product._uid} 
-                  product={product} 
-                  onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
-                />
-              ))}
-            </div>
-          </section>
-        )}
+            </section>
+          );
+        })}
 
         {/* Otros (catch-all) */}
-        {otros.length > 0 && (
-          <section>
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-1.5 h-10 bg-slate-300 rounded-full"></div>
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-800">Otros Productos</h2>
-                <p className="text-slate-500 text-sm mt-1">{otros.length} productos</p>
+        {(() => {
+          const otros = products.filter(p => !dynamicCategories.find(c => c.name === p.categoria?.trim()));
+          if (otros.length === 0) return null;
+          return (
+            <section>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-1.5 h-10 bg-slate-300 rounded-full"></div>
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-800">Otros Productos</h2>
+                  <p className="text-slate-500 text-sm mt-1">{otros.length} productos</p>
+                </div>
               </div>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {otros.map(product => (
-                <ProductCard 
-                  key={product._uid} 
-                  product={product} 
-                  onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
-                />
-              ))}
-            </div>
-          </section>
-        )}
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                {otros.map(product => (
+                  <ProductCard 
+                    key={product._uid} 
+                    product={product} 
+                    onClick={(p) => window.dispatchEvent(new CustomEvent('openProductModal', { detail: p }))} 
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
       </div>
     </div>

@@ -1,50 +1,41 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useProducts } from '../data/ProductsContext';
 import ProductCard from '../components/ProductCard';
-import ProductModal from '../components/ProductModal';
 import { ArrowLeft } from 'lucide-react';
-
-const CATEGORY_CONFIG = {
-  esenciales: {
-    title: 'Esenciales de Enfermería',
-    subtitle: 'Todo lo que necesitas para tu turno: organizado, práctico y bonito.',
-    gradient: 'from-primary/10 to-primary/5',
-    accent: 'primary',
-  },
-  personalizables: {
-    title: 'Colección Personalizable',
-    subtitle: 'Productos únicos con tu nombre, frase o especialidad. ¡Hazlos tuyos!',
-    gradient: 'from-rosa/15 to-rosa/5',
-    accent: 'rosa',
-  },
-};
 
 const CategoryPage = () => {
   const { slug } = useParams();
-  const { products, loading } = useProducts();
+  const { products, dynamicCategories, loading } = useProducts();
 
-  const config = CATEGORY_CONFIG[slug];
+  const dynamicCategory = useMemo(() => {
+    return dynamicCategories?.find(c => c.slug === slug);
+  }, [dynamicCategories, slug]);
+
+  const config = useMemo(() => {
+    if (dynamicCategory) {
+      const GRADIENTS = [
+        { gradient: 'from-primary/10 to-primary/5', accent: 'primary' },
+        { gradient: 'from-rosa/15 to-rosa/5', accent: 'rosa' },
+        { gradient: 'from-blue-500/10 to-blue-500/5', accent: 'blue-500' },
+        { gradient: 'from-emerald-500/10 to-emerald-500/5', accent: 'emerald-500' }
+      ];
+      const style = GRADIENTS[dynamicCategory.name.length % GRADIENTS.length];
+      
+      return {
+        title: dynamicCategory.name,
+        subtitle: `Explora nuestra selección de ${dynamicCategory.name.toLowerCase()}.`,
+        gradient: style.gradient,
+        accent: style.accent,
+      };
+    }
+    return null;
+  }, [dynamicCategory]);
 
   const filteredProducts = useMemo(() => {
-    if (!products.length) return [];
-
-    if (slug === 'esenciales') {
-      const byCategory = products.filter(p => {
-        const cat = (p.categoria || '').toLowerCase().trim();
-        return cat.includes('esencial');
-      });
-      return byCategory.length > 0 ? byCategory : products.filter(p => p.es_personalizable !== 'Sí');
-    }
-    if (slug === 'personalizables') {
-      const byCategory = products.filter(p => {
-        const cat = (p.categoria || '').toLowerCase().trim();
-        return cat.includes('personaliza') || cat.includes('colección perso') || cat.includes('coleccion perso');
-      });
-      return byCategory.length > 0 ? byCategory : products.filter(p => p.es_personalizable === 'Sí');
-    }
-    return [];
-  }, [products, slug]);
+    if (!dynamicCategory || !products.length) return [];
+    return products.filter(p => p.categoria && p.categoria.trim() === dynamicCategory.name);
+  }, [products, dynamicCategory]);
 
   if (!config) {
     return (

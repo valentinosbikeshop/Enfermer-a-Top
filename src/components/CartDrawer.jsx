@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Trash2, MessageCircle, ShoppingCart } from 'lucide-react';
-import { useProducts } from '../data/ProductsContext';
+import { useProducts, getUnitPriceForQuantity } from '../data/ProductsContext';
 
 const CartDrawer = () => {
   const { cart, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, clearCart } = useProducts();
@@ -9,10 +9,8 @@ const CartDrawer = () => {
 
   const calculateTotal = () => {
     return cart.reduce((total, item) => {
-      const priceStr = item.precio_oferta && item.precio_oferta.trim() !== '' ? item.precio_oferta : item.precio;
-      if (!priceStr) return total;
-      const price = parseInt(priceStr.toString().replace(/\D/g, ''), 10);
-      return total + (isNaN(price) ? 0 : price * item.quantity);
+      const price = getUnitPriceForQuantity(item, item.quantity);
+      return total + (price * item.quantity);
     }, 0);
   };
 
@@ -23,7 +21,8 @@ const CartDrawer = () => {
     
     cart.forEach(item => {
       const customText = item.customization ? `Personalizado: ${item.customization}` : 'Estándar';
-      message += `- ${item.nombre} x${item.quantity} (${customText})\n`;
+      const unitPrice = getUnitPriceForQuantity(item, item.quantity);
+      message += `- ${item.nombre} x${item.quantity} (${customText}) [$${unitPrice.toLocaleString('es-CL')} c/u]\n`;
     });
     
     message += `Total: $${total.toLocaleString('es-CL')}`;
@@ -62,44 +61,59 @@ const CartDrawer = () => {
               <p>Tu carrito está vacío</p>
             </div>
           ) : (
-            cart.map((item, idx) => (
-              <div key={`${item._uid}-${item.customization}-${idx}`} className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                <div className="w-20 h-20 bg-slate-50 rounded-xl overflow-hidden flex-shrink-0 p-2">
-                  <img src={item.imagen_url} alt={item.nombre} className="w-full h-full object-contain" />
-                </div>
-                
-                <div className="flex-1 flex flex-col">
-                  <h4 className="font-semibold text-slate-800 text-sm line-clamp-2 mb-1">{item.nombre}</h4>
+            cart.map((item, idx) => {
+              const unitPrice = getUnitPriceForQuantity(item, item.quantity);
+              const itemTotal = unitPrice * item.quantity;
+              
+              return (
+                <div key={`${item._uid}-${item.customization}-${idx}`} className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                  <div className="w-24 h-24 bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl overflow-hidden flex-shrink-0 p-2 relative">
+                    <img src={item.imagen_url} alt={item.nombre} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
+                  </div>
                   
-                  {item.customization && (
-                    <span className="text-xs text-primary font-medium mb-2">
-                      Pers: {item.customization}
-                    </span>
-                  )}
-                  
-                  <div className="mt-auto flex items-center justify-between">
-                    <div className="flex items-center bg-slate-100 rounded-lg">
-                      <button 
-                        onClick={() => updateQuantity(item._uid, item.customization, -1)}
-                        className="px-2 py-1 text-slate-600 hover:bg-slate-200 rounded-l-lg transition-colors"
-                      >-</button>
-                      <span className="w-6 text-center text-sm font-medium">{item.quantity}</span>
-                      <button 
-                        onClick={() => updateQuantity(item._uid, item.customization, 1)}
-                        className="px-2 py-1 text-slate-600 hover:bg-slate-200 rounded-r-lg transition-colors"
-                      >+</button>
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-sm line-clamp-2 mb-1">{item.nombre}</h4>
+                      {item.customization && (
+                        <span className="inline-block px-2 py-0.5 bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-wider rounded-md mb-2">
+                          Pers: {item.customization}
+                        </span>
+                      )}
                     </div>
                     
-                    <button 
-                      onClick={() => removeFromCart(item._uid, item.customization)}
-                      className="text-red-400 hover:text-red-500 transition-colors p-1"
-                    >
-                      <Trash2 size={16} />
-                    </button>
+                    <div className="flex items-end justify-between mt-2">
+                      <div className="flex flex-col">
+                        <span className="font-black text-slate-800">${itemTotal.toLocaleString('es-CL')}</span>
+                        {item.quantity > 1 && (
+                          <span className="text-[10px] text-slate-400 font-medium">${unitPrice.toLocaleString('es-CL')} c/u</span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center bg-slate-50 border border-slate-100 rounded-lg overflow-hidden">
+                          <button 
+                            onClick={() => updateQuantity(item._uid, item.customization, -1)}
+                            className="px-2.5 py-1 text-slate-500 hover:bg-slate-200 transition-colors font-medium"
+                          >-</button>
+                          <span className="w-6 text-center text-xs font-bold text-slate-700">{item.quantity}</span>
+                          <button 
+                            onClick={() => updateQuantity(item._uid, item.customization, 1)}
+                            className="px-2.5 py-1 text-slate-500 hover:bg-slate-200 transition-colors font-medium"
+                          >+</button>
+                        </div>
+                        
+                        <button 
+                          onClick={() => removeFromCart(item._uid, item.customization)}
+                          className="text-slate-300 hover:text-red-500 transition-colors p-1"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 

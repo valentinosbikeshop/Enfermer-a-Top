@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, ShoppingBag, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useProducts } from '../data/ProductsContext';
+import { useProducts, getUnitPriceForQuantity } from '../data/ProductsContext';
 
 const ProductModal = ({ product, onClose }) => {
   const { addToCart } = useProducts();
@@ -51,8 +51,22 @@ const ProductModal = ({ product, onClose }) => {
 
   if (!product) return null;
 
-  const hasOffer = product.precio_oferta && product.precio_oferta.trim() !== '' && product.precio_oferta !== product.precio;
   const isOutOfStock = product.stock && product.stock.toString().toLowerCase() === 'agotado';
+
+  const basePrice = parseInt(product.precio?.toString().replace(/\D/g, '') || 0, 10);
+  const mayoreo12 = parseInt(product['precio de 12-24 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo25 = parseInt(product['precio de 25-50 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo51 = parseInt(product['precio de 51-100 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo100 = parseInt(product['precio sobre 100 unidades']?.toString().replace(/\D/g, ''), 10);
+  
+  const tiers = [];
+  if (!isNaN(mayoreo12) && mayoreo12 > 0) tiers.push({ label: '12-24 un', price: mayoreo12, min: 12, max: 24 });
+  if (!isNaN(mayoreo25) && mayoreo25 > 0) tiers.push({ label: '25-50 un', price: mayoreo25, min: 25, max: 50 });
+  if (!isNaN(mayoreo51) && mayoreo51 > 0) tiers.push({ label: '51-100 un', price: mayoreo51, min: 51, max: 100 });
+  if (!isNaN(mayoreo100) && mayoreo100 > 0) tiers.push({ label: '+100 un', price: mayoreo100, min: 100, max: Infinity });
+  
+  const currentUnitPrice = getUnitPriceForQuantity(product, quantity);
+  const totalPrice = currentUnitPrice * quantity;
 
   const formatPrice = (p) => {
     if (!p) return '';
@@ -136,16 +150,37 @@ const ProductModal = ({ product, onClose }) => {
           <div className="md:w-1/2 p-8 md:p-12 flex flex-col">
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-3 tracking-tight leading-tight">{product.nombre}</h2>
             
-            <div className="flex items-end gap-3 mb-8">
-              {hasOffer ? (
-                <>
-                  <span className="text-3xl font-black text-primary">{formatPrice(product.precio_oferta)}</span>
-                  <span className="text-xl text-slate-400 line-through pb-1 font-medium">{formatPrice(product.precio)}</span>
-                </>
-              ) : (
-                <span className="text-3xl font-black text-slate-800">{formatPrice(product.precio)}</span>
-              )}
+            <div className="flex flex-col gap-1 mb-8">
+              <div className="flex items-baseline gap-3">
+                <span className="text-4xl font-black text-slate-800">{formatPrice(totalPrice)}</span>
+                {quantity > 1 && (
+                  <span className="text-lg text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-lg">
+                    {formatPrice(currentUnitPrice)} c/u
+                  </span>
+                )}
+              </div>
             </div>
+
+            {tiers.length > 0 && (
+              <div className="mb-8">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Precios por Mayor</h4>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                  <div className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 ${quantity < 12 ? 'bg-primary/5 border-primary text-primary shadow-sm scale-105' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
+                    <span className="text-[11px] font-bold uppercase">1-11 un</span>
+                    <span className="font-black text-sm">{formatPrice(basePrice)}</span>
+                  </div>
+                  {tiers.map((t, i) => {
+                    const isActive = quantity >= t.min && quantity <= t.max;
+                    return (
+                      <div key={i} className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 ${isActive ? 'bg-primary/5 border-primary text-primary shadow-sm scale-105' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
+                        <span className="text-[11px] font-bold uppercase">{t.label}</span>
+                        <span className="font-black text-sm">{formatPrice(t.price)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             <p className="text-slate-600 mb-8 whitespace-pre-line leading-relaxed">
               {product.descripcion_larga || product.descripcion_corta}

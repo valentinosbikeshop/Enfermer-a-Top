@@ -4,7 +4,7 @@ import { ShoppingCart, Menu, X, ChevronDown, Search } from 'lucide-react';
 import { useProducts } from '../data/ProductsContext';
 
 const Header = () => {
-  const { cart, setIsCartOpen, products } = useProducts();
+  const { cart, setIsCartOpen, products, dynamicCategories } = useProducts();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCatOpen, setIsCatOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -87,10 +87,7 @@ const Header = () => {
       .slice(0, 6);
   }, [searchQuery, products]);
 
-  const categories = [
-    { name: 'Esenciales de Enfermería', slug: 'esenciales' },
-    { name: 'Colección Personalizable', slug: 'personalizables' },
-  ];
+  const categories = dynamicCategories || [];
 
   const handleProductClick = (product) => {
     // Dispatch a custom event so pages can catch it and open the modal
@@ -207,7 +204,7 @@ const Header = () => {
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-slate-800 truncate">{product.nombre}</p>
                           <p className="text-xs text-primary font-semibold">
-                            {formatPrice(product.precio_oferta && product.precio_oferta.trim() !== '' ? product.precio_oferta : product.precio)}
+                            {formatPrice(product.precio)}
                           </p>
                         </div>
                       </button>
@@ -282,7 +279,7 @@ const Header = () => {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-slate-800 truncate">{product.nombre}</p>
                       <p className="text-xs text-primary font-semibold">
-                        {formatPrice(product.precio_oferta && product.precio_oferta.trim() !== '' ? product.precio_oferta : product.precio)}
+                        {formatPrice(product.precio)}
                       </p>
                     </div>
                   </button>

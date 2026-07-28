@@ -6,7 +6,6 @@ const ProductCard = ({ product, onClick }) => {
     nombre, 
     descripcion_corta, 
     precio, 
-    precio_oferta, 
     imagen_url, 
     imagenes,
     etiqueta,
@@ -15,8 +14,19 @@ const ProductCard = ({ product, onClick }) => {
 
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
-  const hasOffer = precio_oferta && precio_oferta.trim() !== '' && precio_oferta !== precio;
   const isOutOfStock = stock && stock.toString().toLowerCase() === 'agotado';
+
+  const basePrice = parseInt(precio?.toString().replace(/\D/g, '') || 0, 10);
+  const mayoreo12 = parseInt(product['precio de 12-24 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo25 = parseInt(product['precio de 25-50 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo51 = parseInt(product['precio de 51-100 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo100 = parseInt(product['precio sobre 100 unidades']?.toString().replace(/\D/g, ''), 10);
+  
+  const prices = [basePrice, mayoreo12, mayoreo25, mayoreo51, mayoreo100].filter(p => !isNaN(p) && p > 0);
+  const minPrice = prices.length > 0 ? Math.min(...prices) : basePrice;
+  const maxPrice = prices.length > 0 ? Math.max(...prices) : basePrice;
+  
+  const hasWholesale = minPrice < maxPrice;
 
   const formatPrice = (p) => {
     if (!p) return '';
@@ -108,13 +118,15 @@ const ProductCard = ({ product, onClick }) => {
         <p className="text-sm text-slate-500 mb-4 flex-grow line-clamp-2">{descripcion_corta}</p>
         
         <div className="flex items-center gap-2 mt-auto">
-          {hasOffer ? (
-            <>
-              <span className="text-xl font-bold text-primary">{formatPrice(precio_oferta)}</span>
-              <span className="text-sm text-slate-400 line-through">{formatPrice(precio)}</span>
-            </>
+          {hasWholesale ? (
+            <div className="flex flex-col">
+              <span className="text-[10px] uppercase tracking-wider text-primary font-bold">Por mayor desde</span>
+              <div className="flex items-end gap-1.5">
+                <span className="text-xl font-bold text-slate-800">{formatPrice(minPrice)}</span>
+              </div>
+            </div>
           ) : (
-            <span className="text-xl font-bold text-slate-800">{formatPrice(precio)}</span>
+            <span className="text-xl font-bold text-slate-800">{formatPrice(basePrice)}</span>
           )}
         </div>
       </div>

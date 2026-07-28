@@ -9,34 +9,40 @@ const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQezEtJRT3Aeo
 
 /**
  * Converts any Google Drive URL format into a direct image URL.
- * Supports:
- *   - https://drive.google.com/file/d/FILE_ID/...
- *   - https://drive.google.com/open?id=FILE_ID
- *   - https://drive.google.com/uc?id=FILE_ID&export=...
- *   - https://drive.google.com/uc?export=view&id=FILE_ID
- * Returns the original URL unchanged if it's not a Google Drive link.
  */
 const convertGoogleDriveUrl = (url) => {
   if (!url || typeof url !== 'string') return url;
   const trimmed = url.trim();
-
-  // Pattern 1: /file/d/FILE_ID/
   const fileMatch = trimmed.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (fileMatch) {
-    return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
-  }
-
-  // Pattern 2: /open?id=FILE_ID  or  /uc?id=FILE_ID  or  /uc?export=view&id=FILE_ID
+  if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
   const idParamMatch = trimmed.match(/drive\.google\.com\/(?:open|uc)\?.*?id=([a-zA-Z0-9_-]+)/);
-  if (idParamMatch) {
-    return `https://lh3.googleusercontent.com/d/${idParamMatch[1]}`;
-  }
-
+  if (idParamMatch) return `https://lh3.googleusercontent.com/d/${idParamMatch[1]}`;
   return trimmed;
+};
+
+/**
+ * Pure function to calculate unit price based on quantity tiers.
+ */
+export const getUnitPriceForQuantity = (product, qty) => {
+  if (!product) return 0;
+  let price = parseInt(product.precio?.toString().replace(/\D/g, '') || 0, 10);
+  
+  const mayoreo12 = parseInt(product['precio de 12-24 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo25 = parseInt(product['precio de 25-50 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo51 = parseInt(product['precio de 51-100 unidades']?.toString().replace(/\D/g, ''), 10);
+  const mayoreo100 = parseInt(product['precio sobre 100 unidades']?.toString().replace(/\D/g, ''), 10);
+  
+  if (qty >= 100 && !isNaN(mayoreo100) && mayoreo100 > 0) price = mayoreo100;
+  else if (qty >= 51 && !isNaN(mayoreo51) && mayoreo51 > 0) price = mayoreo51;
+  else if (qty >= 25 && !isNaN(mayoreo25) && mayoreo25 > 0) price = mayoreo25;
+  else if (qty >= 12 && !isNaN(mayoreo12) && mayoreo12 > 0) price = mayoreo12;
+  
+  return price;
 };
 
 export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
+  const [dynamicCategories, setDynamicCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -47,23 +53,22 @@ export const ProductsProvider = ({ children }) => {
   }, []);
 
   const fetchProducts = () => {
-    // Add cache-busting parameter so Google Sheets never serves stale CSV
     const urlWithCacheBust = `${SHEET_URL}&_t=${Date.now()}`;
     Papa.parse(urlWithCacheBust, {
       download: true,
       header: true,
       complete: (results) => {
         const data = results.data
-          .filter(item => item.nombre && item.nombre.trim() !== '') // Filter out empty rows by nombre
+          .filter(item => item.nombre && item.nombre.trim() !== '') // Filter out empty rows
           .map((item, index) => {
-            const { id, ...rest } = item; // Remove id column if present
+            const { id, ...rest } = item;
             const rawUrls = (item.imagen_url || '').split(/\s*;\s*/).filter(u => u.trim() !== '');
             const processedUrls = rawUrls.map(convertGoogleDriveUrl);
             const imagen_url = processedUrls.length > 0 ? processedUrls[0] : '';
             return {
               ...rest,
               _uid: `row_${index}`,
-              categoria: (item.categoria || '').trim(), // Normalize whitespace
+              categoria: (item.categoria || '').trim(),
               imagen_url: imagen_url,
               imagenes: processedUrls,
               Peso_kg: parseFloat(item.Peso_kg?.toString().replace(',', '.') || '0') || 0,
@@ -73,20 +78,39 @@ export const ProductsProvider = ({ children }) => {
             };
           });
         
-        // Separate hero/banner from regular products
         const hero = data.find(item => {
           const cat = (item.categoria || '').toLowerCase();
           return cat.includes('banner') || cat.includes('sistema') || cat.includes('inicio');
         });
         if (hero) setHeroData(hero);
         
-        // Only set displayable products (exclude banner/system items)
         const displayProducts = data.filter(item => {
           const cat = (item.categoria || '').toLowerCase();
           return !cat.includes('banner') && !cat.includes('sistema') && !cat.includes('inicio');
         });
+
+        // Compute Dynamic Categories (>= 2 products)
+        const catCount = {};
+        displayProducts.forEach(p => {
+          if (p.categoria) {
+            const cName = p.categoria.trim();
+            if (!catCount[cName]) {
+              catCount[cName] = { 
+                name: cName, 
+                slug: cName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+                count: 0 
+              };
+            }
+            catCount[cName].count++;
+          }
+        });
+
+        const validCats = Object.values(catCount)
+          .filter(c => c.count >= 2)
+          .sort((a, b) => b.count - a.count);
+
+        setDynamicCategories(validCats);
         setProducts(displayProducts);
-        
         setLoading(false);
       },
       error: (err) => {
@@ -132,6 +156,7 @@ export const ProductsProvider = ({ children }) => {
   return (
     <ProductsContext.Provider value={{
       products,
+      dynamicCategories,
       loading,
       heroData,
       cart,
@@ -146,3 +171,4 @@ export const ProductsProvider = ({ children }) => {
     </ProductsContext.Provider>
   );
 };
+

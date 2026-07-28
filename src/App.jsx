@@ -12,7 +12,7 @@ import CatalogPage from './pages/CatalogPage';
 import { Truck, CreditCard, Package, MessageCircle, Instagram, ArrowRight } from 'lucide-react';
 
 const HomePage = () => {
-  const { products, loading } = useProducts();
+  const { products, dynamicCategories, loading } = useProducts();
 
   if (loading) {
     return (
@@ -68,29 +68,30 @@ const HomePage = () => {
           </div>
           
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <Link 
-              to="/categoria/esenciales"
-              className="group relative bg-gradient-to-br from-primary/10 to-primary/5 rounded-3xl p-8 md:p-10 border border-primary/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-              <h3 className="text-2xl font-bold text-slate-800 mb-2 relative z-10">Esenciales de Enfermería</h3>
-              <p className="text-slate-600 mb-4 relative z-10">Todo lo que necesitas para tu turno: organizado, práctico y bonito.</p>
-              <span className="inline-flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all relative z-10">
-                Ver productos <ArrowRight size={18} />
-              </span>
-            </Link>
-
-            <Link 
-              to="/categoria/personalizables"
-              className="group relative bg-gradient-to-br from-rosa/15 to-rosa/5 rounded-3xl p-8 md:p-10 border border-rosa/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-40 h-40 bg-rosa/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-              <h3 className="text-2xl font-bold text-slate-800 mb-2 relative z-10">Colección Personalizable</h3>
-              <p className="text-slate-600 mb-4 relative z-10">Productos únicos con tu nombre, frase o especialidad. ¡Hazlos tuyos!</p>
-              <span className="inline-flex items-center gap-1 text-rosa font-semibold group-hover:gap-2 transition-all relative z-10">
-                Ver productos <ArrowRight size={18} />
-              </span>
-            </Link>
+            {dynamicCategories && dynamicCategories.map((cat, idx) => {
+              const GRADIENTS = [
+                { bg: 'from-primary/10 to-primary/5', border: 'border-primary/10', blob: 'bg-primary/10', text: 'text-primary' },
+                { bg: 'from-rosa/15 to-rosa/5', border: 'border-rosa/10', blob: 'bg-rosa/20', text: 'text-[#d66b88]' },
+                { bg: 'from-blue-500/10 to-blue-500/5', border: 'border-blue-500/10', blob: 'bg-blue-500/10', text: 'text-blue-500' },
+                { bg: 'from-emerald-500/10 to-emerald-500/5', border: 'border-emerald-500/10', blob: 'bg-emerald-500/10', text: 'text-emerald-500' },
+              ];
+              const style = GRADIENTS[idx % GRADIENTS.length];
+              
+              return (
+                <Link 
+                  key={cat.slug}
+                  to={`/categoria/${cat.slug}`}
+                  className={`group relative bg-gradient-to-br ${style.bg} rounded-3xl p-8 md:p-10 border ${style.border} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden`}
+                >
+                  <div className={`absolute top-0 right-0 w-40 h-40 ${style.blob} rounded-full blur-2xl -translate-y-1/2 translate-x-1/2`}></div>
+                  <h3 className="text-2xl font-bold text-slate-800 mb-2 relative z-10">{cat.name}</h3>
+                  <p className="text-slate-600 mb-4 relative z-10">Descubre {cat.count} productos disponibles en esta categoría.</p>
+                  <span className={`inline-flex items-center gap-1 ${style.text} font-semibold group-hover:gap-2 transition-all relative z-10`}>
+                    Ver productos <ArrowRight size={18} />
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
