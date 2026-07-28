@@ -106,7 +106,7 @@ const ProductModal = ({ product, onClose }) => {
 
         <div className="flex flex-col md:flex-row h-full">
           {/* Image */}
-          <div className="md:w-1/2 bg-slate-50 p-8 flex items-center justify-center relative overflow-hidden group">
+          <div className="w-full md:w-1/2 bg-slate-50 p-6 md:p-8 flex items-center justify-center relative overflow-hidden group min-h-[300px]">
              {product.etiqueta && (
               <div className="absolute top-6 left-6 z-10 px-4 py-1 text-sm font-bold rounded-full bg-rosa text-slate-800">
                 {product.etiqueta}
@@ -142,7 +142,7 @@ const ProductModal = ({ product, onClose }) => {
               key={currentImgIndex}
               src={imagesToRender[currentImgIndex % imagesToRender.length]} 
               alt={product.nombre}
-              className={`max-w-full max-h-[400px] object-contain drop-shadow-lg transition-transform duration-500 animate-fade-in ${imagesToRender.length > 1 ? '' : 'group-hover:scale-105'} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
+              className={`w-full h-full max-h-[500px] object-contain drop-shadow-lg transition-transform duration-500 animate-fade-in ${imagesToRender.length > 1 ? '' : 'group-hover:scale-105'} ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
             />
           </div>
 
@@ -164,17 +164,17 @@ const ProductModal = ({ product, onClose }) => {
             {tiers.length > 0 && (
               <div className="mb-8">
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Precios por Mayor</h4>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                  <div className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 ${quantity < 12 ? 'bg-primary/5 border-primary text-primary shadow-sm scale-105' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
-                    <span className="text-[11px] font-bold uppercase">1-11 un</span>
-                    <span className="font-black text-sm">{formatPrice(basePrice)}</span>
+                <div className="flex flex-wrap gap-2 w-full">
+                  <div className={`flex-1 min-w-[70px] py-3 px-2 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 ${quantity < 12 ? 'bg-primary/5 border-primary text-primary shadow-sm scale-105 z-10 relative' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
+                    <span className="text-[10px] md:text-[11px] font-bold uppercase text-center">1-11 un</span>
+                    <span className="font-black text-xs md:text-sm mt-1">{formatPrice(basePrice)}</span>
                   </div>
                   {tiers.map((t, i) => {
                     const isActive = quantity >= t.min && quantity <= t.max;
                     return (
-                      <div key={i} className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 ${isActive ? 'bg-primary/5 border-primary text-primary shadow-sm scale-105' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
-                        <span className="text-[11px] font-bold uppercase">{t.label}</span>
-                        <span className="font-black text-sm">{formatPrice(t.price)}</span>
+                      <div key={i} className={`flex-1 min-w-[70px] py-3 px-2 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 ${isActive ? 'bg-primary/5 border-primary text-primary shadow-sm scale-105 z-10 relative' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
+                        <span className="text-[10px] md:text-[11px] font-bold uppercase text-center">{t.label}</span>
+                        <span className="font-black text-xs md:text-sm mt-1">{formatPrice(t.price)}</span>
                       </div>
                     );
                   })}
@@ -228,15 +228,15 @@ const ProductModal = ({ product, onClose }) => {
 
             <div className="mt-auto flex gap-4">
               {!isOutOfStock && (
-                <div className="flex items-center bg-slate-100 rounded-full overflow-hidden">
+                <div className="flex items-center bg-slate-100 rounded-full h-[52px] shrink-0">
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-3 text-slate-600 hover:bg-slate-200 transition-colors font-medium"
+                    className="w-12 h-full flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors font-medium rounded-l-full"
                   >-</button>
                   <span className="w-8 text-center font-semibold text-slate-800">{quantity}</span>
                   <button 
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-4 py-3 text-slate-600 hover:bg-slate-200 transition-colors font-medium"
+                    className="w-12 h-full flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors font-medium rounded-r-full"
                   >+</button>
                 </div>
               )}
@@ -244,14 +244,14 @@ const ProductModal = ({ product, onClose }) => {
               <button 
                 onClick={handleAddToCart}
                 disabled={isOutOfStock || (isPersonalizable && isCustomized === null) || (isCustomized === true && !customText.trim())}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-full font-extrabold transition-all duration-300 hover-spring ${
+                className={`flex-1 flex items-center justify-center gap-2 h-[52px] px-6 rounded-full font-extrabold transition-all duration-300 hover-spring ${
                   isOutOfStock 
                     ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                     : 'bg-primary text-white hover:bg-[#c94d45] hover:shadow-[0_8px_20px_-6px_rgba(220,90,81,0.5)] transform hover:-translate-y-1'
                 }`}
               >
                 <ShoppingBag size={20} strokeWidth={2.5} />
-                {isOutOfStock ? 'Agotado' : 'Agregar al Carrito'}
+                {isOutOfStock ? 'Agotado' : 'Agregar'}
               </button>
             </div>
             
