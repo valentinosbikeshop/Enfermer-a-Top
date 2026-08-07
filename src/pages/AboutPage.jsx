@@ -1,6 +1,7 @@
 import React from 'react';
 import { useProducts } from '../data/ProductsContext';
 import HeroMedia from '../components/HeroMedia';
+import SEO from '../components/SEO';
 import { Heart, Star, Sparkles, Gift, Users, MapPin, Instagram, MessageCircle } from 'lucide-react';
 
 const AboutPage = () => {
@@ -36,7 +37,10 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-
+      <SEO 
+        title="Sobre Nosotros | Enfermería Top" 
+        description="Conoce nuestra historia y por qué somos la tienda #1 en Chile de insumos para enfermeras." 
+      />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary/10 via-rosa/10 to-primary/5 py-20 md:py-28 overflow-hidden">
         {/* Animated Background Pattern */}

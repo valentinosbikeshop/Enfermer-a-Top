@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { ProductsProvider, useProducts } from './data/ProductsContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -9,6 +10,7 @@ import CartDrawer from './components/CartDrawer';
 import AboutPage from './pages/AboutPage';
 import CategoryPage from './pages/CategoryPage';
 import CatalogPage from './pages/CatalogPage';
+import SEO from './components/SEO';
 import { Truck, CreditCard, Package, MessageCircle, Instagram, ArrowRight } from 'lucide-react';
 
 const HomePage = () => {
@@ -36,6 +38,10 @@ const HomePage = () => {
 
   return (
     <>
+      <SEO 
+        title="Enfermería Top | Especialistas en Insumos Clínicos" 
+        description="Encuentra libretas personalizables, fonendoscopios y artículos esenciales para enfermería. Calidad médica superior con envíos a todo Chile." 
+      />
       <Hero />
 
       <main className="flex-1 container mx-auto px-4 py-16 space-y-24">
@@ -196,19 +202,21 @@ import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <ProductsProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/catalogo" element={<CatalogPage />} />
-            <Route path="/sobre-nosotros" element={<AboutPage />} />
-            <Route path="/categoria/:slug" element={<CategoryPage />} />
-          </Routes>
-        </Layout>
-      </ProductsProvider>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <ProductsProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/catalogo" element={<CatalogPage />} />
+              <Route path="/sobre-nosotros" element={<AboutPage />} />
+              <Route path="/categoria/:slug" element={<CategoryPage />} />
+            </Routes>
+          </Layout>
+        </ProductsProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 };
 

@@ -56,7 +56,7 @@ const HeroMedia = ({ src, alt, className }) => {
       src={src} 
       alt={alt} 
       className={className}
-      loading="lazy"
+      fetchPriority="high"
     />
   );
 };

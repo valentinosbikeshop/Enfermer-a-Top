@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useProducts } from '../data/ProductsContext';
 import ProductCard from '../components/ProductCard';
+import SEO from '../components/SEO';
 import { ArrowLeft } from 'lucide-react';
 
 const CategoryPage = () => {
@@ -58,7 +59,10 @@ const CategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-
+      <SEO 
+        title={`${config.title} | Enfermería Top`}
+        description={config.subtitle}
+      />
       {/* Category Hero */}
       <section className={`relative bg-gradient-to-br ${config.gradient} py-16 md:py-24 overflow-hidden`}>
         {/* Animated Background Pattern */}

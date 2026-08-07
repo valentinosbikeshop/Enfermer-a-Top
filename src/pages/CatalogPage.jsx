@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useProducts } from '../data/ProductsContext';
 import ProductCard from '../components/ProductCard';
 import ProductModal from '../components/ProductModal';
+import SEO from '../components/SEO';
 
 const CatalogPage = () => {
   const { products, dynamicCategories, loading } = useProducts();
@@ -16,7 +17,10 @@ const CatalogPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-
+      <SEO 
+        title="Catálogo Completo | Enfermería Top" 
+        description="Explora nuestro catálogo completo de productos esenciales para enfermería y medicina. Fonendoscopios, uniformes, accesorios y más." 
+      />
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-primary/10 via-rosa/5 to-primary/5 py-16 md:py-24 overflow-hidden">
         {/* Animated Background Pattern */}
