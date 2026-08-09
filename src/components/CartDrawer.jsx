@@ -21,8 +21,9 @@ const CartDrawer = () => {
     
     cart.forEach(item => {
       const customText = item.customization ? `Personalizado: ${item.customization}` : 'Estándar';
+      const notesText = item.orderNotes ? ` | Notas: ${item.orderNotes}` : '';
       const unitPrice = getUnitPriceForQuantity(item, item.quantity);
-      message += `- ${item.nombre} x${item.quantity} (${customText}) [$${unitPrice.toLocaleString('es-CL')} c/u]\n`;
+      message += `- ${item.nombre} x${item.quantity} (${customText}${notesText}) [$${unitPrice.toLocaleString('es-CL')} c/u]\n`;
     });
     
     message += `Total: $${total.toLocaleString('es-CL')}`;
@@ -66,7 +67,7 @@ const CartDrawer = () => {
               const itemTotal = unitPrice * item.quantity;
               
               return (
-                <div key={`${item._uid}-${item.customization}-${idx}`} className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                <div key={`${item._uid}-${item.customization}-${item.orderNotes}-${idx}`} className="flex gap-4 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
                   <div className="w-24 h-24 bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl overflow-hidden flex-shrink-0 p-2 relative">
                     <img src={item.imagen_url} alt={item.nombre} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
                   </div>
@@ -75,8 +76,13 @@ const CartDrawer = () => {
                     <div>
                       <h4 className="font-bold text-slate-800 text-sm line-clamp-2 mb-1">{item.nombre}</h4>
                       {item.customization && (
-                        <span className="inline-block px-2 py-0.5 bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-wider rounded-md mb-2">
+                        <span className="inline-block px-2 py-0.5 bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-wider rounded-md mb-1 mr-1">
                           Pers: {item.customization}
+                        </span>
+                      )}
+                      {item.orderNotes && (
+                        <span className="inline-block px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-wider rounded-md mb-1 line-clamp-1" title={item.orderNotes}>
+                          Notas: {item.orderNotes}
                         </span>
                       )}
                     </div>
@@ -92,18 +98,18 @@ const CartDrawer = () => {
                       <div className="flex items-center gap-3">
                         <div className="flex items-center bg-slate-50 border border-slate-100 rounded-lg overflow-hidden">
                           <button 
-                            onClick={() => updateQuantity(item._uid, item.customization, -1)}
+                            onClick={() => updateQuantity(item._uid, item.customization, item.orderNotes, -1)}
                             className="px-2.5 py-1 text-slate-500 hover:bg-slate-200 transition-colors font-medium"
                           >-</button>
                           <span className="w-6 text-center text-xs font-bold text-slate-700">{item.quantity}</span>
                           <button 
-                            onClick={() => updateQuantity(item._uid, item.customization, 1)}
+                            onClick={() => updateQuantity(item._uid, item.customization, item.orderNotes, 1)}
                             className="px-2.5 py-1 text-slate-500 hover:bg-slate-200 transition-colors font-medium"
                           >+</button>
                         </div>
                         
                         <button 
-                          onClick={() => removeFromCart(item._uid, item.customization)}
+                          onClick={() => removeFromCart(item._uid, item.customization, item.orderNotes)}
                           className="text-slate-300 hover:text-red-500 transition-colors p-1"
                         >
                           <Trash2 size={16} />

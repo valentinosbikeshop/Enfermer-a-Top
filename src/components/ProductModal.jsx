@@ -8,6 +8,7 @@ const ProductModal = ({ product, onClose }) => {
   
   const [isCustomized, setIsCustomized] = useState(isPersonalizable ? null : false);
   const [customText, setCustomText] = useState('');
+  const [orderNotes, setOrderNotes] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
@@ -15,6 +16,7 @@ const ProductModal = ({ product, onClose }) => {
   useEffect(() => {
     setIsCustomized(isPersonalizable ? null : false);
     setCustomText('');
+    setOrderNotes('');
     setQuantity(1);
     setCurrentImgIndex(0);
   }, [product, isPersonalizable]);
@@ -77,7 +79,7 @@ const ProductModal = ({ product, onClose }) => {
   const handleAddToCart = () => {
     if (isOutOfStock) return;
     const customData = isCustomized ? customText : null;
-    addToCart(product, quantity, customData);
+    addToCart(product, quantity, customData, orderNotes.trim() || null);
     onClose();
   };
 
@@ -223,6 +225,24 @@ const ProductModal = ({ product, onClose }) => {
                     />
                   </div>
                 )}
+              </div>
+            )}
+
+            {!isOutOfStock && (
+              <div className="mb-6 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                <label className="block text-sm font-bold text-slate-800 mb-1">
+                  Detalles de tu pedido <span className="text-slate-400 font-normal">(Opcional)</span>
+                </label>
+                <p className="text-xs text-slate-500 mb-3 leading-relaxed">
+                  Si aplica, especifícanos el diseño, color de tu preferencia, o cualquier detalle relevante.
+                </p>
+                <textarea
+                  value={orderNotes}
+                  onChange={(e) => setOrderNotes(e.target.value)}
+                  placeholder="Ej. Diseño ositos, color rosado..."
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none text-slate-700 text-sm bg-white placeholder:text-slate-400"
+                  rows={2}
+                />
               </div>
             )}
 

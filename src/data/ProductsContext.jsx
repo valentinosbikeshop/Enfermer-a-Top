@@ -120,30 +120,30 @@ export const ProductsProvider = ({ children }) => {
     });
   };
 
-  const addToCart = (product, quantity, customization = null) => {
+  const addToCart = (product, quantity, customization = null, orderNotes = null) => {
     setCart(prev => {
       const existing = prev.find(item => 
-        item._uid === product._uid && item.customization === customization
+        item._uid === product._uid && item.customization === customization && item.orderNotes === orderNotes
       );
       if (existing) {
         return prev.map(item => 
-          item._uid === product._uid && item.customization === customization
+          item._uid === product._uid && item.customization === customization && item.orderNotes === orderNotes
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { ...product, quantity, customization }];
+      return [...prev, { ...product, quantity, customization, orderNotes }];
     });
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (productId, customization = null) => {
-    setCart(prev => prev.filter(item => !(item._uid === productId && item.customization === customization)));
+  const removeFromCart = (productId, customization = null, orderNotes = null) => {
+    setCart(prev => prev.filter(item => !(item._uid === productId && item.customization === customization && item.orderNotes === orderNotes)));
   };
 
-  const updateQuantity = (productId, customization, delta) => {
+  const updateQuantity = (productId, customization, orderNotes, delta) => {
     setCart(prev => prev.map(item => {
-      if (item._uid === productId && item.customization === customization) {
+      if (item._uid === productId && item.customization === customization && item.orderNotes === orderNotes) {
         const newQuantity = Math.max(1, item.quantity + delta);
         return { ...item, quantity: newQuantity };
       }
