@@ -90,8 +90,22 @@ const Header = () => {
   const categories = dynamicCategories || [];
 
   const handleProductClick = (product) => {
+    // Find the dynamic category slug for this product
+    const categoryName = product.categoria?.trim();
+    const targetCategory = dynamicCategories?.find(c => c.name === categoryName);
+    
+    if (targetCategory) {
+      navigate(`/categoria/${targetCategory.slug}`);
+    } else {
+      navigate('/catalogo');
+    }
+    
     // Dispatch a custom event so pages can catch it and open the modal
-    window.dispatchEvent(new CustomEvent('openProductModal', { detail: product }));
+    // A small timeout ensures the background route starts changing before the modal opens
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('openProductModal', { detail: product }));
+    }, 50);
+    
     setIsSearchOpen(false);
     setSearchQuery('');
   };
