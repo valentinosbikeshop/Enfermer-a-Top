@@ -106,7 +106,7 @@ const ProductModal = ({ product, onClose }) => {
 
         <div className="flex flex-col md:flex-row h-full">
           {/* Image */}
-          <div className="w-full md:flex-[2] bg-slate-50 p-6 md:p-8 flex items-center justify-center relative overflow-hidden group min-h-[300px]">
+          <div className="w-full md:w-1/4 shrink-0 bg-slate-50 p-6 flex items-center justify-center relative overflow-hidden group min-h-[300px]">
              {product.etiqueta && (
               <div className="absolute top-6 left-6 z-10 px-4 py-1 text-sm font-bold rounded-full bg-rosa text-slate-800">
                 {product.etiqueta}
@@ -147,7 +147,7 @@ const ProductModal = ({ product, onClose }) => {
           </div>
 
           {/* Details */}
-          <div className="w-full md:flex-[5] p-8 md:p-12 flex flex-col">
+          <div className="w-full md:w-3/4 shrink-0 p-8 md:p-12 flex flex-col">
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-3 tracking-tight leading-tight">{product.nombre}</h2>
             
             <div className="flex flex-col gap-1 mb-8">

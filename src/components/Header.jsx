@@ -10,7 +10,8 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const catRef = useRef(null);
-  const searchRef = useRef(null);
+  const desktopSearchRef = useRef(null);
+  const mobileSearchRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,7 +31,13 @@ const Header = () => {
       if (catRef.current && !catRef.current.contains(e.target)) {
         setIsCatOpen(false);
       }
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
+      if (
+        (desktopSearchRef.current && desktopSearchRef.current.contains(e.target)) ||
+        (mobileSearchRef.current && mobileSearchRef.current.contains(e.target))
+      ) {
+        // Click is inside one of the search bars, do nothing
+      } else {
+        // Click is outside
         setIsSearchOpen(false);
       }
     };
@@ -91,8 +98,8 @@ const Header = () => {
 
   const handleProductClick = (product) => {
     // Find the dynamic category slug for this product
-    const categoryName = product.categoria?.trim();
-    const targetCategory = dynamicCategories?.find(c => c.name === categoryName);
+    const categoryName = product.categoria?.trim().toLowerCase();
+    const targetCategory = dynamicCategories?.find(c => c.name.toLowerCase() === categoryName);
     
     if (targetCategory) {
       navigate(`/categoria/${targetCategory.slug}`);
@@ -175,7 +182,7 @@ const Header = () => {
         <div className="flex items-center gap-2">
 
           {/* Search */}
-          <div className="relative" ref={searchRef}>
+          <div className="relative" ref={desktopSearchRef}>
             <button 
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="p-2 text-slate-600 hover:text-primary transition-colors md:hidden"
@@ -209,7 +216,7 @@ const Header = () => {
                     {searchResults.map(product => (
                       <button
                         key={product._uid}
-                        onClick={() => handleProductClick(product)}
+                        onMouseDown={(e) => { e.preventDefault(); handleProductClick(product); }}
                         className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
                       >
                         <div className="w-12 h-12 bg-slate-50 rounded-lg overflow-hidden flex-shrink-0 p-1">
@@ -259,7 +266,7 @@ const Header = () => {
 
       {/* Mobile Search Bar (when toggled) */}
       {isSearchOpen && (
-        <div className="md:hidden bg-white border-t border-slate-100 px-4 py-3" ref={searchRef}>
+        <div className="md:hidden bg-white border-t border-slate-100 px-4 py-3" ref={mobileSearchRef}>
           <div className="flex items-center bg-slate-100 rounded-full px-4 py-2.5 gap-2 focus-within:ring-2 focus-within:ring-primary/30">
             <Search size={18} className="text-slate-400" />
             <input
@@ -284,7 +291,7 @@ const Header = () => {
                 searchResults.map(product => (
                   <button
                     key={product._uid}
-                    onClick={() => handleProductClick(product)}
+                    onMouseDown={(e) => { e.preventDefault(); handleProductClick(product); }}
                     className="w-full flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
                   >
                     <div className="w-10 h-10 bg-slate-50 rounded-lg overflow-hidden flex-shrink-0 p-1">
