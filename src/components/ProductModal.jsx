@@ -94,7 +94,7 @@ const ProductModal = ({ product, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 backdrop-blur-md transition-opacity">
       <div 
-        className="bg-white rounded-[32px] w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative animate-fade-in-up flex flex-col md:flex-row"
+        className="bg-white rounded-[32px] w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative animate-fade-in-up flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <button 
@@ -104,7 +104,7 @@ const ProductModal = ({ product, onClose }) => {
           <X size={24} strokeWidth={2.5} />
         </button>
 
-        <div className="flex flex-col md:flex-row h-full">
+        <div className="flex flex-col md:flex-row h-full w-full">
           {/* Image */}
           <div className="w-full md:w-1/4 shrink-0 bg-slate-50 p-6 flex items-center justify-center relative overflow-hidden group min-h-[300px]">
              {product.etiqueta && (
